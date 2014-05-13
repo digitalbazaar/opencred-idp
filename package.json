@@ -1,0 +1,43 @@
+{
+   "name": "telehash-icn",
+   "version": "0.0.1",
+   "main":"index.js",
+   "dependencies": {
+     "node-telehash": "git://github.com/telehash/node-telehash.git",
+     "node-forge": "~0.2.37",
+     "sodium": "=1.0.9"
+   },
+  "keywords": [
+    "telehash",
+    "identity",
+    "credential"
+  ],
+  "description": "An identity credential-based login server",
+  "homepage": "https://web-payments.org/specs/source/identity-credentials/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalbazaar/telehash-icn.git"
+  },
+  "licenses": [
+  {
+    "type": "MIT",
+    "url": "https://github.com/telehash/node-telehash/raw/master/LICENSE"
+  }
+  ],
+  "author": {
+    "name": "Manu Sporny",
+    "email": "msporny@digitalbazaar.com",
+    "url": "http://manu.sporny.org/"
+  },
+  "maintainers": [
+    {
+    "name": "Manu Sporny",
+    "email": "msporny@digitalbazaar.com",
+    "url": "http://manu.sporny.org/"
+    }
+  ],
+   "engines": {
+     "node": "0.10.x",
+     "npm":  ">1.2.x"
+   }
+}
