@@ -17,7 +17,7 @@ function idpPacketHandler(err, packet, chan, callback) {
     return console.log('idp: packet error', err);
   }
   var message = packet.js;
-  
+
   // received packet
   console.log('idp received:', message);
 
@@ -45,23 +45,23 @@ function idpPacketHandler(err, packet, chan, callback) {
 }
 
 /***************** Identity Provider Init ******************/
-var hashnameFile = path.join(process.cwd(), 'hashname-oc-idp.json');
+var hashnameFile = path.join(process.cwd(), 'hashname-ic-idp.json');
 th.init({id: hashnameFile}, function(err, hashname) {
   if(err) {
     return console.log("alpha generation/startup failed", err);
   }
-  
+
   async.auto({
     initDatabase: function(callback, results) {
       // initializes the database for demo purposes
       var identityEmail = 'bob@example.com';
       var identityPassword = 'reallyLong1234Password';
-      
+
       // generate the identity's distributed identifier
-      var md = 
+      var md =
         forge.md.sha256.create().update(identityEmail + identityPassword);
       var identityHash = md.digest().toHex()
-        
+
       mappingDb[identityHash] = {
         '@context': 'https://w3id.org/identity/v1',
         'identityDocument': 'https://example.org/i/bob',
@@ -83,6 +83,6 @@ th.init({id: hashnameFile}, function(err, hashname) {
     }
     console.log('idp debug: IdP is online');
   });
-  
+
 });
 

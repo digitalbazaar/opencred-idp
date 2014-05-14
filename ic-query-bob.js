@@ -35,7 +35,7 @@ function rpPacketHandler(err, packet, chan, callback) {
 }
 
 /***************** Relying Party Init ******************/
-var hashnameFile = path.join(process.cwd(), 'hashname-oc-bob.json');
+var hashnameFile = path.join(process.cwd(), 'hashname-ic-bob.json');
 th.init({id: hashnameFile}, function(err, hashname) {
   if(err) {
     return console.log("beta generation/startup failed", err);
