@@ -23,20 +23,7 @@ function idpPacketHandler(err, packet, chan, callback) {
 
   if(message.type === 'Query' && 'query' in message) {
     if(message.query in mappingDb) {
-      var publicKeyPem = mappingDb[message.query].publicKeyPem;
-      var publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
-      var unencrypted = JSON.stringify(mappingDb[message.query]);
-      //var encrypted = publicKey.encrypt(unencrypted, 'RSA-OAEP');
-      //var encryptedBase64 = forge.util.encode64(encrypted);
-      var response = {
-        js: {
-          '@context': 'https://w3id.org/identity/v1',
-          type: 'QueryResponse',
-          query: message.query,
-          response: unencrypted
-        }
-      };
-      chan.send(response);
+      chan.send({js: mappingDb[message.query]});
     }
   }
 
@@ -52,26 +39,59 @@ th.init({id: hashnameFile}, function(err, hashname) {
   }
 
   async.auto({
-    initDatabase: function(callback, results) {
+    initDatabase: function(callback) {
       // initializes the database for demo purposes
       var identityEmail = 'bob@example.com';
-      var identityPassword = 'reallyLong1234Password';
+      var identityPassword = 'reallyLong1234Passphrase';
 
       // generate the identity's distributed identifier
       var md =
         forge.md.sha256.create().update(identityEmail + identityPassword);
-      var identityHash = md.digest().toHex()
+      var identityHash = md.digest().toHex();
 
-      mappingDb[identityHash] = {
+      var queryResponse = {
         '@context': 'https://w3id.org/identity/v1',
-        'identityDocument': 'https://example.org/i/bob',
-        'did': 'id:' + identityHash,
-        'publicKeyPem': '-----BEGIN PUBLIC KEY-----\r\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnRjXJXPXsdDbOnF+shpH\r\nBHBpJc4cxfdZ3rUyRaoEA+iDAvkjChYA4UAF2S5JncIqSy7PgkjDOD3uummcRaa9\r\nJDDEtsEY1XNH6HgeaCft82zQiOA0t+8XpKrQ9dMAvOUWZzeE4neYFI9/AFNiM/mf\r\n6Rpfg6VevUjx2j1fJGj/LJkJ7UhUMmjvQooByN55hMWdZsHzVEBPbLG1oJpbw3aL\r\noIgdjzwM78egnI7+Yw2f6Yt5wh6KIx8Y8mjF6xbEku+A2epZkUFatQCTHw26oSi+\r\nJ0f0Z6pVIitibYo0sZ1/JEXIbS0YgH5W3hhUTKha7e0EyZvbhksPjZ7TLifpucf3\r\nnQIDAQAB\r\n-----END PUBLIC KEY-----\r\n'
+        type: 'QueryResponse',
+        query: identityHash,
+        proofOfWork: [{
+          // scrypt-based proof of work that combines the identity hash,
+          // created date, and nonce to create a hash w/ a particular difficulty
+          // (first X nibbles must be 0)
+          id: 'urn:sha256:3e1c72137ed7cb7aa134abdae008aee943fefc539590fde529ecf029743bf974',
+          previousProofOfWork: 'urn:sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b',
+          type: 'IdentityProof2014',
+          created: '2014-05-14T02:52:03+0000',
+          nonce: 'j38f9sa083jf80',
+          difficulty: 5,
+        }]
       };
-      console.log('idp debug: database initialized.');
+
+      // generate a keypair to store w/ the identity
+      var keypair = forge.rsa.generateKeyPair({bits: 512});
+      var secrets = {};
+      secrets.publicKeyPem =
+        forge.pki.publicKeyToPem(keypair.publicKey);
+      secrets.privateKeyPem =
+        forge.pki.privateKeyToPem(keypair.privateKey);
+
+      // derive the key and iv from the sha-256 of the email+password
+      var tmpBuffer = md.digest();
+      var key = tmpBuffer.getBytes(16);
+      var iv = tmpBuffer.getBytes(16);
+
+      // encrypt the private key PEM data
+      // (other modes include: CFB, OFB, and CTR)
+      var cipher = forge.aes.createEncryptionCipher(key, 'CTR');
+      cipher.start(iv);
+      cipher.update(forge.util.createBuffer(JSON.stringify(secrets)));
+      cipher.finish();
+      queryResponse.data = forge.util.encode64(cipher.output.bytes());
+
+      mappingDb[identityHash] = queryResponse;
+      console.log('idp debug: database initialized.', mappingDb);
       callback();
     },
-    joinNetwork: ['initDatabase', function(callback, results) {
+    joinNetwork: ['initDatabase', function(callback) {
       // join the query channel
       hashname.listen(ocQueryChannel, idpPacketHandler);
       console.log('idp debug: listening on '+ ocQueryChannel);
