@@ -14,6 +14,9 @@ var identityPassword = 'reallyLong1234Passphrase';
 var md = forge.md.sha256.create().update(identityEmail + identityPassword);
 var identityHash = md.digest().toHex()
 
+// the identity information
+var identityInfo = {};
+
 // open credential query channel
 var ocQueryChannel = 'ocQuery';
 
@@ -28,6 +31,33 @@ function rpPacketHandler(err, packet, chan, callback) {
 
   // received packet
   console.log('rp received:', message);
+
+  if(message.type === 'QueryResponse' &&
+    message.query === identityHash) {
+    // decrypt the response
+    // derive the key and iv from the sha-256 of the email+password
+    var tmpBuffer = md.digest();
+    var key = tmpBuffer.getBytes(16);
+    var iv = tmpBuffer.getBytes(16);
+
+    var cipher = forge.aes.createDecryptionCipher(key, 'CTR');
+    var data = forge.util.decode64(message.data);
+    cipher.start(iv);
+    cipher.update(forge.util.createBuffer(data));
+    cipher.finish();
+
+    // extract the public and private key for the identity
+    var decrypted = JSON.parse(cipher.output.data);
+    identityInfo = {
+      '@context': 'https://w3id.org/identity/v1',
+      id: message.idpDocument,
+      did: 'id:' + message.query,
+      publicKeyPem: decrypted.publicKeyPem,
+      privateKeyPem: decrypted.privateKeyPem
+    }
+
+    console.log('rp identity:', identityInfo);
+  }
 
   // send an ack and recieve subsequent packets
   callback(true);

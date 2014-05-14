@@ -53,6 +53,7 @@ th.init({id: hashnameFile}, function(err, hashname) {
         '@context': 'https://w3id.org/identity/v1',
         type: 'QueryResponse',
         query: identityHash,
+        idpDocument: 'https://example.org/i/bob',
         proofOfWork: [{
           // scrypt-based proof of work that combines the identity hash,
           // created date, and nonce to create a hash w/ a particular difficulty
@@ -75,12 +76,12 @@ th.init({id: hashnameFile}, function(err, hashname) {
         forge.pki.privateKeyToPem(keypair.privateKey);
 
       // derive the key and iv from the sha-256 of the email+password
+      // FIXME: switch to bcrypt or scrypt
       var tmpBuffer = md.digest();
       var key = tmpBuffer.getBytes(16);
       var iv = tmpBuffer.getBytes(16);
 
-      // encrypt the private key PEM data
-      // (other modes include: CFB, OFB, and CTR)
+      // encrypt the secret data
       var cipher = forge.aes.createEncryptionCipher(key, 'CTR');
       cipher.start(iv);
       cipher.update(forge.util.createBuffer(JSON.stringify(secrets)));
