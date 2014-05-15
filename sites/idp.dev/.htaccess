@@ -1,0 +1,6 @@
+AddType application/x-httpd-php htm html php
+AddHandler application/x-httpd-php .htm .html
+
+RewriteEngine On 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
