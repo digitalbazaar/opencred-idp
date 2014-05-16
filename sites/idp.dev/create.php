@@ -1,3 +1,65 @@
+<?php
+function url_origin($s, $use_forwarded_host=false) {
+  $ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') ? true:false;
+  $sp = strtolower($s['SERVER_PROTOCOL']);
+  $protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
+  $port = $s['SERVER_PORT'];
+  $port = ((!$ssl && $port=='80') || ($ssl && $port=='443')) ? '' : ':'.$port;
+  $host = ($use_forwarded_host && isset($s['HTTP_X_FORWARDED_HOST'])) ?
+    $s['HTTP_X_FORWARDED_HOST'] : (isset($s['HTTP_HOST']) ?
+    $s['HTTP_HOST'] : null);
+  $host = isset($host) ? $host : $s['SERVER_NAME'] . $port;
+  return $protocol . '://' . $host;
+}
+
+function full_url($s, $use_forwarded_host=false)
+{
+    return url_origin($s, $use_forwarded_host) . $s['REQUEST_URI'];
+}
+
+// create the identity if it doesn't already exist
+if(!empty($_POST)) {
+  if($_POST['name'] && $_POST['passphrase']) {
+    $filename = dirname(__FILE__) . '/db/'. $_POST['name'] . '.jsonld';
+
+    // ensure that the account doesn't already exist
+    if(file_exists($filename)) {
+      $error = true;
+      $error_message = 'An identity with that name already exists.';
+    } else {
+      // initialize the identity
+      $identity_url =
+        strstr(full_url($_SERVER) , 'create', true) . $_POST['name'];
+      $identity = array();
+      $identity['@context'] = 'https://w3id.org/identity/v1';
+      $identity['id'] = $identity_url;
+      $identity['sysBcryptPasswordHash'] =
+        password_hash($_POST['passphrase'], PASSWORD_DEFAULT);
+
+      // write the identity file to the database
+      $dbdir = dirname(__FILE__) . '/db';
+      echo "DBFILE" . $dbdir;
+      mkdir($dbdir, 700);
+      if(!file_put_contents($filename, json_encode($identity,
+        JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES), LOCK_EX)) {
+        $error = true;
+        $error_message = 'Could not write the identity to the filesystem. ' .
+          'Make sure the webserver has write permission to the db/ directory.';
+      } else {
+        // set the login cookie
+        session_start();
+        $_SESSION['name'] = $_POST['name'];
+        session_write_close();
+
+        // redirect to the identity
+        header('Location: '. $identity_url);
+        die();
+      }
+    }
+  }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -48,22 +110,17 @@
           </div>
 
           <div class="inner cover">
-  
-            <form class="form-signin" role="form">
+
+            <form class="form-signin" role="form" action="create" method="POST">
               <h2 class="form-signin-heading">Create</h2>
               <p class="lead">Create a new identity.</p>
-              <input type="name" class="form-control" placeholder="Short name (examples: frank, julie, rufus)" required autofocus>
-              <input type="passphrase" class="form-control" placeholder="Passphrase (example: 13YellowGorillasEatingCake)" required>
+              <input type="text" name="name" class="form-control" placeholder="Short name (examples: frank, julie, rufus)" required autofocus>
+              <input type="text" name="passphrase" class="form-control" placeholder="Passphrase (example: 13YellowGorillasEatingCake)" required>
               <button class="btn btn-lg lead btn-primary btn-block" type="submit">Create</button>
+              <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
             </form>
 
           </div>
-
-    <div class="container">
-
-
-    </div> <!-- /container -->
-
 
           <div class="mastfoot">
             <div class="inner">

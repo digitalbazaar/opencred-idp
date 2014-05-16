@@ -1,8 +1,10 @@
 <?php
-if(!empty($_POST)) {
-  var_dump($_POST);
-  exit();
-}
+session_start();
+
+// get the identity data
+$filename = dirname(__FILE__) . '/db/'. $_SESSION['name'] . '.jsonld';
+$identity_json = file_get_contents($filename);
+
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +16,7 @@ if(!empty($_POST)) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Cover Template for Bootstrap</title>
+    <title>Identity for <?php echo $_SESSION['name']; ?></title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -45,19 +47,14 @@ if(!empty($_POST)) {
 
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">Personal Identity Provider</h3>
-              <ul class="nav masthead-nav">
-                <li><a href="./">Login</a></li>
-                <li class="active"><a href="create">Create</a></li>
-                <li><a href="admin">Admin</a></li>
-              </ul>
+              <h3 class="masthead-brand"></h3>
             </div>
           </div>
 
           <div class="inner cover">
 
-            <h2 class="form-signin-heading">User</h2>
-            <p class="lead">This is you.</p>
+            <h2 class="form-signin-heading"><?php echo $_SESSION['name']; ?></h2>
+            <pre style="text-align: left;"><?php echo $identity_json; ?></pre>
 
           </div>
 
