@@ -3,4 +3,6 @@ AddHandler application/x-httpd-php .htm .html
 
 RewriteEngine On 
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^([^\.]+)$ $1.php [NC,L]
+RewriteRule ^(create|admin)$ $1.php [NC]
+RewriteRule ^([^\.]+)$ identity.php [NC]
+
