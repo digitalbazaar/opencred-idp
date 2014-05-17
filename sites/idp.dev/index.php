@@ -1,3 +1,46 @@
+<?php
+include 'utils.php';
+session_start();
+
+// redirect to the identity page if already logged in
+if($_SESSION['name']) {
+  $identity_url =
+    strstr(full_url($_SERVER) , 'create', true) . $_SESSION['name'];
+  header('Location: '. $identity_url);
+  die();
+};
+
+// attempt a login if login information was POSTed
+if(!empty($_POST)) {
+  if($_POST['name'] && $_POST['passphrase']) {
+    $filename = dirname(__FILE__) . '/db/'. $_POST['name'] . '.jsonld';
+    $identity_json = file_get_contents($filename);
+
+    // ensure that the account doesn't already exist
+    if(!$identity_json) {
+      $error = true;
+      $error_message = 'Login was unsuccessful, please check the name and '.
+        'passphrase that you entered.';
+    } else {
+      $identity = json_decode($identity_json, true);
+      if(!password_verify($_POST['passphrase'], $identity['sysPasswordHash'])) {
+        $error = true;
+        $error_message = 'Login was unsuccessful, please check the name and '.
+          'passphrase that you entered.';
+      } else {
+        // set the login cookie
+        $_SESSION['name'] = $_POST['name'];
+        session_write_close();
+
+        // redirect to the identity
+        header('Location: '. $identity['id']);
+        die();
+      }
+    }
+  }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -48,15 +91,15 @@
           </div>
 
           <div class="inner cover">
-  
-            <form class="form-signin" role="form">
+
+            <form class="form-signin" role="form" action="" method="POST">
               <h2 class="form-signin-heading">Login</h2>
               <p class="lead">Login to your personal identity provider.</p>
-              <input type="email" class="form-control" placeholder="Short name" required autofocus>
-              <input type="passphrase" class="form-control" placeholder="Passphrase" required>
+              <input type="text" name="name" class="form-control" placeholder="Short name" required autofocus>
+              <input type="password" name="passphrase" class="form-control" placeholder="Passphrase" required>
               <button class="btn btn-lg lead btn-primary btn-block" type="submit">Login</button>
             </form>
-
+            <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
           </div>
 
     <div class="container">
@@ -85,4 +128,3 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   </body>
 </html>
-
