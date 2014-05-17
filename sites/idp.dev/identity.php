@@ -7,15 +7,24 @@ $identity_json = file_get_contents($filename);
 $identity = array();
 $registered = false;
 
+// generate a new nonce for the session if this isn't a POST
+if(empty($_POST)) {
+  $nonceSource = session_id() . microtime(true);
+  $nonce = substr(hash('sha256', $nonceSource), 0, 10);
+  $_SESSION['nonce'] = $nonce;
+  session_write_close();
+}
+
 if($identity_json) {
   $identity = json_decode($identity_json, true);
+
 
   if(array_key_exists('sysRegistered', $identity)) {
     $registered = true;
   }
 
-  $registration_url = 'http://login.dev/register.html?identity=' .
-    urlencode($identity['id']);
+  $registration_url = 'http://login.dev/register?identity=' .
+    urlencode($identity['id']) . '&nonce=' . $_SESSION['nonce'];
 }
 
 ?>
