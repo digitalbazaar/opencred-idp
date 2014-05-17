@@ -63,7 +63,7 @@ th.init({id: hashnameFile}, function(err, hashname) {
           type: 'IdentityProof2014',
           created: '2014-05-14T02:52:03+0000',
           nonce: 'j38f9sa083jf80',
-          difficulty: 5,
+          difficulty: 5
         }]
       };
 

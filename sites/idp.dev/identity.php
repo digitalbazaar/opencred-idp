@@ -4,6 +4,19 @@ session_start();
 // get the identity data
 $filename = dirname(__FILE__) . '/db/'. $_SESSION['name'] . '.jsonld';
 $identity_json = file_get_contents($filename);
+$identity = array();
+$registered = false;
+
+if($identity_json) {
+  $identity = json_decode($identity_json, true);
+
+  if(array_key_exists('sysRegistered', $identity)) {
+    $registered = true;
+  }
+
+  $registration_url = 'http://login.dev/register.html?identity=' .
+    urlencode($identity['id']);
+}
 
 ?>
 
@@ -42,6 +55,14 @@ $identity_json = file_get_contents($filename);
     <div class="site-wrapper">
 
       <div class="site-wrapper-inner">
+
+
+        <div class="cover-container">
+          <div class="masthead clearfix">
+            <div class="inner">
+              <?php if(!$registered) echo '<div class="alert alert-warning">The next step is to register this identity with the global identity network. <a class="alert-link" href="'. $registration_url .'">Click here to register</a>.</div>' ?>
+            </div>
+          </div>
 
         <div class="cover-container">
 
