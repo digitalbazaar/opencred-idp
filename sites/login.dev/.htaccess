@@ -1,0 +1,3 @@
+RewriteEngine On 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(register)$ $1.html [NC,L]
