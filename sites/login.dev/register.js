@@ -9,15 +9,44 @@ function getParameterByName(name) {
 }
 
 /**
+ * Performs a browser-based POST (as opposed to an XMLHttpRequest-based one).
+ *
+ * @param url the URL to POST the given data to.
+ * @param params the parameters to POST to the given URL.
+ */
+function post(url, params) {
+  // The rest of this code assumes you are not using a library.
+  // It can be made less wordy if you use one.
+  var form = document.createElement("form");
+  form.setAttribute('method', 'POST');
+  form.setAttribute('action', url);
+
+  for(var key in params) {
+    if(params.hasOwnProperty(key)) {
+      var hiddenField = document.createElement('input');
+      hiddenField.setAttribute('type', 'hidden');
+      hiddenField.setAttribute('name', key);
+      hiddenField.setAttribute('value', params[key]);
+
+      form.appendChild(hiddenField);
+    }
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+/**
  * Registers a given identity by generating an encrypted blob that is stored
  * with the identity provider, which will be requested and decrypted when
  * logging in via the mixnet.
  */
 function registerId(e) {
-  console.log("REGISTER ID");
+  console.log("Generating identity registration data for callback...");
 
   // get the identity document
   var identityDocument = getParameterByName('identity');
+  var callbackUrl = getParameterByName('callback');
   var email = $('#email').val();
   var passphrase = $('#passphrase').val();
 
@@ -37,6 +66,7 @@ function registerId(e) {
   };
 
   // use scrypt to generate a key and iv for encryption/decryption
+  // FIXME: Show progress meter when deriving the key
   var scrypt = scrypt_module_factory();
   var scryptKey = forge.util.createBuffer(scrypt.crypto_scrypt(
     scrypt.encode_utf8(email), scrypt.encode_utf8(passphrase),
@@ -60,6 +90,7 @@ function registerId(e) {
     deviceKey = JSON.parse(dCipher.output.data);
   } else {
     // generate the device keypair and store it if it doesn't exist
+    // FIXME: Show progress meter when generating the keypair
     var keypair = forge.rsa.generateKeyPair({bits: 512});
     deviceKey.publicKeyPem =
       forge.pki.publicKeyToPem(keypair.publicKey);
@@ -91,8 +122,10 @@ function registerId(e) {
   mapping.queryResponse = forge.util.encode64(eCipher.output.bytes());
 
   // create the registration object and post it back to the identity doc
+  // FIXME: This should probably use the Identity Credentials spec in some way
   console.log('queryResponse:', queryResponse);
   console.log('POST data:', mapping);
+  post(callbackUrl, {message: JSON.stringify(mapping)});
 };
 
 // prevent the form submit button from doing a form post
