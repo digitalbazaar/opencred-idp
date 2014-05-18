@@ -32,7 +32,7 @@ if(!empty($_POST)) {
         password_hash($_POST['passphrase'], PASSWORD_DEFAULT);
 
       // write the identity file to the database
-      if(write_identity($_POST['name'], $identity)) {
+      if(!write_identity($_POST['name'], $identity)) {
         $error = true;
         $error_message = 'Could not write the identity to the filesystem. ' .
           'Make sure the webserver has write permission to the db/ directory.';
