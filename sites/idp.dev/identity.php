@@ -1,10 +1,9 @@
 <?php
+include "utils.php";
 session_start();
 
 // get the identity data
-$filename = dirname(__FILE__) . '/db/'. $_SESSION['name'] . '.jsonld';
-$identity_json = file_get_contents($filename);
-$identity = array();
+$identity = get_identity($_SESSION['name']);
 $registered = false;
 
 // generate a new nonce for the session if this isn't a POST
@@ -15,16 +14,49 @@ if(empty($_POST)) {
   session_write_close();
 }
 
-if($identity_json) {
-  $identity = json_decode($identity_json, true);
+if($_GET['action'] === 'register') {
+  if($_GET['nonce'] !== $_SESSION['nonce']) {
+    $error = true;
+    $error_message = 'The nonce associated with the request is invalid. ' .
+      'Please try registering again.';
+  } else {
+    $message = json_decode($_POST['message'], true);
+    if(!array_key_exists('sysIdpMapping', $identity)) {
+      $identity['sysIdpMapping'] = array();
+    }
+    if(!array_key_exists('sysDeviceKeys', $identity)) {
+      $identity['sysDeviceKeys'] = array();
+    }
 
+    // append the device key to the set of known device keys
+    $deviceKey = array();
+    $deviceKey['publicKeyPem'] = $message['publicKeyPem'];
+    array_push($identity['sysDeviceKeys'], $deviceKey);
 
+    // append the IdP mapping to the list of known mappings
+    unset($message['publicKeyPem']);
+    array_push($identity['sysIdpMapping'], $message);
+
+    $identity['sysDeviceKeys'] =
+      array_unique($identity['sysDeviceKeys'], SORT_REGULAR);
+    $identity['sysIdpMapping'] =
+      array_unique($identity['sysIdpMapping'], SORT_REGULAR);
+
+    // store the identity
+    write_identity($_SESSION['name'], $identity);
+
+    // FIXME: Make sure to set - $identity['sysRegistered'] = true;
+    $registered = true;
+  }
+} else if($identity) {
   if(array_key_exists('sysRegistered', $identity)) {
     $registered = true;
   }
 
+  $callback_url = urlencode($identity['id'] . '?action=register&nonce=' .
+    $_SESSION['nonce']);
   $registration_url = 'http://login.dev/register?identity=' .
-    urlencode($identity['id']) . '&nonce=' . $_SESSION['nonce'];
+    urlencode($identity['id']) . '&callback=' . $callback_url;
 }
 
 ?>
@@ -69,7 +101,8 @@ if($identity_json) {
         <div class="cover-container">
           <div class="masthead clearfix">
             <div class="inner">
-              <?php if(!$registered) echo '<div class="alert alert-warning">The next step is to register this identity with the global identity network. <a class="alert-link" href="'. $registration_url .'">Click here to register</a>.</div>' ?>
+              <?php if(!$registered) echo '<div class="alert alert-warning">WARNING: This identity isn\'t active yet! The next step is to register it with the global Web login network. <a class="alert-link" href="'. $registration_url .'">Click here to register</a>.</div>' ?>
+              <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
             </div>
           </div>
 
@@ -84,7 +117,7 @@ if($identity_json) {
           <div class="inner cover">
 
             <h2 class="form-signin-heading"><?php echo $_SESSION['name']; ?></h2>
-            <pre style="text-align: left;"><?php echo $identity_json; ?></pre>
+            <pre style="text-align: left;"><?php echo json_encode($identity, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES); ?></pre>
 
           </div>
 
