@@ -12,10 +12,8 @@ if($_SESSION['name']) {
 // create the identity if it doesn't already exist
 if(!empty($_POST)) {
   if($_POST['name'] && $_POST['passphrase']) {
-    $filename = dirname(__FILE__) . '/db/'. $_POST['name'] . '.jsonld';
-
     // ensure that the account doesn't already exist
-    if(file_exists($filename)) {
+    if(get_identity($_POST['name'])) {
       $error = true;
       $error_message = 'An identity with that name already exists.';
     } else if($_POST['passphrase'] !== $_POST['passphrase_verify']) {
@@ -34,11 +32,7 @@ if(!empty($_POST)) {
         password_hash($_POST['passphrase'], PASSWORD_DEFAULT);
 
       // write the identity file to the database
-      $dbdir = dirname(__FILE__) . '/db';
-      echo "DBFILE" . $dbdir;
-      mkdir($dbdir, 700);
-      if(!file_put_contents($filename, json_encode($identity,
-        JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES), LOCK_EX)) {
+      if(write_identity($_POST['name'], $identity)) {
         $error = true;
         $error_message = 'Could not write the identity to the filesystem. ' .
           'Make sure the webserver has write permission to the db/ directory.';
