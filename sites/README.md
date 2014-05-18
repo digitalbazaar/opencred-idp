@@ -30,4 +30,3 @@ To run the Login Mixnet, you will need to perform the following commands:
 # Enable the site: `a2ensite login.dev`.
 # Reload the Apache2 config: `service restart apache2`
 # Open a web browser to `http://login.dev/`
-
