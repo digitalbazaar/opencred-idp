@@ -71,7 +71,7 @@ app.post('/register', function(req, res) {
     'query' in req.body && 'queryResponse' in req.body) {
     mappingDb[req.body['query']] = req.body['queryResponse'];
     console.log('idp debug: mapping database updated', mappingDb);
-    res.status(200);
+    res.status(201);
     res.send('Mapping added to database.');
   } else {
     res.status(400);

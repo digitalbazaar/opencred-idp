@@ -45,6 +45,21 @@ if($_GET['action'] === 'register') {
     // store the identity
     write_identity($_SESSION['name'], $identity);
 
+    // Add the mapping to the Telehash network
+    $curl = curl_init('http://localhost:42425/register');
+    curl_setopt($curl, CURLOPT_HEADER, false);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_HTTPHEADER,
+      array("Content-type: application/ld+json"));
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $_POST['message']);
+    $response = curl_exec($curl);
+    $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    if($status != 201) {
+      // FIXME: handle errors where the mapping wasn't added to Telehash
+    }
+    curl_close($curl);
+
     // FIXME: Make sure to set - $identity['sysRegistered'] = true;
     $registered = true;
   }
