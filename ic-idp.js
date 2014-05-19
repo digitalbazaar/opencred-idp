@@ -35,69 +35,16 @@ function idpPacketHandler(err, packet, chan, callback) {
 var hashnameFile = path.join(process.cwd(), 'hashname-ic-idp.json');
 th.init({id: hashnameFile}, function(err, hashname) {
   if(err) {
-    return console.log("alpha generation/startup failed", err);
+    return console.log("IdP startup failed", err);
   }
 
   async.auto({
-    initDatabase: function(callback) {
-      // initializes the database for demo purposes
-      var identityEmail = 'bob@example.com';
-      var identityPassword = 'reallyLong1234Passphrase';
-
-      // generate the identity's distributed identifier
-      var md =
-        forge.md.sha256.create().update(identityEmail + identityPassword);
-      var identityHash = md.digest().toHex();
-
-      var queryResponse = {
-        '@context': 'https://w3id.org/identity/v1',
-        type: 'QueryResponse',
-        query: identityHash,
-        idpDocument: 'https://example.org/i/bob',
-        proofOfWork: [{
-          // scrypt-based proof of work that combines the identity hash,
-          // created date, and nonce to create a hash w/ a particular difficulty
-          // (first X nibbles must be 0)
-          id: 'urn:sha256:3e1c72137ed7cb7aa134abdae008aee943fefc539590fde529ecf029743bf974',
-          previousProofOfWork: 'urn:sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b',
-          type: 'IdentityProof2014',
-          created: '2014-05-14T02:52:03+0000',
-          nonce: 'j38f9sa083jf80',
-          difficulty: 5
-        }]
-      };
-
-      // generate a keypair to store w/ the identity
-      var keypair = forge.rsa.generateKeyPair({bits: 512});
-      var secrets = {};
-      secrets.publicKeyPem =
-        forge.pki.publicKeyToPem(keypair.publicKey);
-      secrets.privateKeyPem =
-        forge.pki.privateKeyToPem(keypair.privateKey);
-
-      // derive the key and iv from the sha-256 of the email+password
-      // FIXME: switch to bcrypt or scrypt
-      var tmpBuffer = md.digest();
-      var key = tmpBuffer.getBytes(16);
-      var iv = tmpBuffer.getBytes(16);
-
-      // encrypt the secret data
-      var cipher = forge.aes.createEncryptionCipher(key, 'CTR');
-      cipher.start(iv);
-      cipher.update(forge.util.createBuffer(JSON.stringify(secrets)));
-      cipher.finish();
-      queryResponse.data = forge.util.encode64(cipher.output.bytes());
-
-      mappingDb[identityHash] = queryResponse;
-      console.log('idp debug: database initialized.', mappingDb);
-      callback();
-    },
-    joinNetwork: ['initDatabase', function(callback) {
+    joinNetwork: function(callback) {
       // join the query channel
       hashname.listen(ocQueryChannel, idpPacketHandler);
       console.log('idp debug: listening on '+ ocQueryChannel);
       callback();
-    }]
+    }
   }, function(err, results) {
     if(err) {
       return console.log('idp error:', err);
@@ -107,3 +54,30 @@ th.init({id: hashnameFile}, function(err, hashname) {
 
 });
 
+/******************** Express ******************************/
+var bodyParser = require('body-parser');
+var express = require('express');
+var app = express();
+
+// parse application/json and application/x-www-form-urlencoded
+app.use(bodyParser())
+
+// parse application/ld+json as json
+app.use(bodyParser.json({type: 'application/ld+json'}));
+
+app.post('/register', function(req, res) {
+  // FIXME: protect against attacks from localhost
+  if('type' in req.body && req.body.type === 'IdentityProviderMapping' &&
+    'query' in req.body && 'queryResponse' in req.body) {
+    mappingDb[req.body['query']] = req.body['queryResponse'];
+    console.log('idp debug: mapping database updated', mappingDb);
+    res.status(200);
+    res.send('Mapping added to database.');
+  } else {
+    res.status(400);
+    res.send('IdentityProviderMapping was invalid.');
+  }
+
+});
+
+app.listen(42425, 'localhost');

@@ -3,8 +3,10 @@
    "version": "0.0.1",
    "main":"index.js",
    "dependencies": {
-     "node-telehash": "git://github.com/telehash/node-telehash.git",
+     "body-parser": "~1.2.0",
+     "express": "~4.2.0",
      "node-forge": "~0.2.37",
+     "node-telehash": "git://github.com/telehash/node-telehash.git",
      "sodium": "=1.0.9"
    },
   "keywords": [
