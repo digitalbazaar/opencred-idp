@@ -1,5 +1,4 @@
 var async = require('async');
-var forge = require('node-forge');
 var fs = require('fs');
 var path = require('path');
 var th = require('telehash');
@@ -61,7 +60,7 @@ th.init({id: hashnameFile}, function(err, hashname) {
       console.log('idp debug: listening on '+ ocQueryChannel);
       callback();
     }]
-  }, function(err, results) {
+  }, function(err) {
     if(err) {
       return console.log('idp error:', err);
     }
@@ -76,7 +75,7 @@ var express = require('express');
 var app = express();
 
 // parse application/json and application/x-www-form-urlencoded
-app.use(bodyParser())
+app.use(bodyParser());
 
 // parse application/ld+json as json
 app.use(bodyParser.json({type: 'application/ld+json'}));
@@ -86,7 +85,7 @@ app.post('/register', function(req, res) {
   if('type' in req.body && req.body.type === 'IdentityProviderMapping' &&
     'query' in req.body && 'queryResponse' in req.body) {
     // add the query response to the mapping database
-    mappingDb[req.body['query']] = req.body['queryResponse'];
+    mappingDb[req.body.query] = req.body.queryResponse;
     console.log('idp debug: mapping database updated', mappingDb);
     res.status(201);
     res.send('Mapping added to database.');
