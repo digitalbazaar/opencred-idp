@@ -3,8 +3,8 @@ var fs = require('fs');
 var path = require('path');
 var th = require('telehash');
 
-// open credential query channel
-var ocQueryChannel = 'ocQuery';
+// identity credentials query channel
+var icQueryChannel = 'icQuery';
 
 // the mapping database
 var mappingDb = {};
@@ -23,7 +23,12 @@ function idpPacketHandler(err, packet, chan, callback) {
 
   if(message.type === 'Query' && 'query' in message) {
     if(message.query in mappingDb) {
-      chan.send({js: mappingDb[message.query]});
+      chan.send({js: {
+        '@context': 'https://w3id.org/identity/v1',
+        type: 'QueryResponse',
+        query: message.query,
+        queryResponse: mappingDb[message.query]
+      }});
     }
   }
 
@@ -56,8 +61,8 @@ th.init({id: hashnameFile}, function(err, hashname) {
     },
     joinNetwork: ['loadDatabase', function(callback) {
       // join the query channel
-      hashname.listen(ocQueryChannel, idpPacketHandler);
-      console.log('idp debug: listening on '+ ocQueryChannel);
+      hashname.listen(icQueryChannel, idpPacketHandler);
+      console.log('idp debug: listening on '+ icQueryChannel);
       callback();
     }]
   }, function(err) {
