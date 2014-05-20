@@ -1,5 +1,6 @@
 var async = require('async');
 var forge = require('node-forge');
+var fs = require('fs');
 var path = require('path');
 var th = require('telehash');
 
@@ -39,12 +40,27 @@ th.init({id: hashnameFile}, function(err, hashname) {
   }
 
   async.auto({
-    joinNetwork: function(callback) {
+    loadDatabase: function(callback) {
+      // save the mapping database to disk
+      fs.readFile('ic-idp.db.json', function(err, data) {
+        if(err) {
+          console.log(
+            'idp warning: Failed to load mapping DB from disk -', err);
+          callback();
+        } else {
+          mappingDb = JSON.parse(data);
+          console.log(
+            'idp debug: Loaded mapping database from ic-idp.db.json.');
+          callback();
+        }
+      });
+    },
+    joinNetwork: ['loadDatabase', function(callback) {
       // join the query channel
       hashname.listen(ocQueryChannel, idpPacketHandler);
       console.log('idp debug: listening on '+ ocQueryChannel);
       callback();
-    }
+    }]
   }, function(err, results) {
     if(err) {
       return console.log('idp error:', err);
@@ -69,10 +85,18 @@ app.post('/register', function(req, res) {
   // FIXME: protect against attacks from localhost
   if('type' in req.body && req.body.type === 'IdentityProviderMapping' &&
     'query' in req.body && 'queryResponse' in req.body) {
+    // add the query response to the mapping database
     mappingDb[req.body['query']] = req.body['queryResponse'];
     console.log('idp debug: mapping database updated', mappingDb);
     res.status(201);
     res.send('Mapping added to database.');
+
+    // save the mapping database to disk
+    fs.writeFile('ic-idp.db.json', JSON.stringify(mappingDb), function(err) {
+      if(err) {
+        console.log('idp error: Failed to write mapping DB to disk -', err);
+      }
+    });
   } else {
     res.status(400);
     res.send('IdentityProviderMapping was invalid.');
