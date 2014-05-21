@@ -1,8 +1,10 @@
 AddType application/x-httpd-php htm html php
+AddType application/ld+json jsonld
 AddHandler application/x-httpd-php .htm .html
 
 RewriteEngine On 
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(create|admin)$ $1.php [NC]
+RewriteRule ^idp-key-1$ idp-key-1.jsonld [NC]
+RewriteRule ^(create|email|admin)$ $1.php [NC]
 RewriteRule ^([^\.]+)$ identity.php [NC]
 
