@@ -1,4 +1,5 @@
 <?php
+include 'bedrock.php';
 
 /**
  * Calculates the origin URL based on a given PHP environment.
@@ -53,6 +54,24 @@ function write_identity($name, $identity) {
 
   return file_put_contents($filename, json_encode($identity,
     JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES), LOCK_EX);
+}
+
+/**
+ * Performs a signature using the Identity Provider's key.
+ *
+ * @param $jsonld the JSON-LD document to sign.
+ * @return a signed JSON-LD document
+ */
+function idp_sign($jsonld) {
+  $privateKey = json_decode(file_get_contents('privatekey.jsonld'), true);
+  $options = array();
+  $options['key'] = $privateKey['privateKeyPem'];
+  $options['keyId'] = $privateKey['id'];
+  $signature = bedrock_sign((object)$jsonld, $options);
+
+  var_dump($signature);
+
+  return (array)$signature;
 }
 
 ?>
