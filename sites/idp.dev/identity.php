@@ -5,6 +5,7 @@ session_start();
 // get the identity data
 $identity = get_identity($_SESSION['name']);
 $registered = false;
+$emailCredential = false;
 
 // generate a new nonce for the session if this isn't a POST
 if(empty($_POST)) {
@@ -41,11 +42,13 @@ if($_GET['action'] === 'register') {
       array_unique($identity['sysDeviceKeys'], SORT_REGULAR);
     $identity['sysIdpMapping'] =
       array_unique($identity['sysIdpMapping'], SORT_REGULAR);
+    $identity['sysRegistered'] = true;
 
     // store the identity
     write_identity($_SESSION['name'], $identity);
 
     // Add the mapping to the Telehash network
+    // FIXME: curl isn't always available, use native PHP mechanism instead
     $curl = curl_init('http://localhost:42425/register');
     curl_setopt($curl, CURLOPT_HEADER, false);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -66,6 +69,15 @@ if($_GET['action'] === 'register') {
 } else if($identity) {
   if(array_key_exists('sysRegistered', $identity)) {
     $registered = true;
+  }
+
+  if(array_key_exists('credential', $identity)) {
+    foreach($identity['credential'] as $credential) {
+      if(array_key_exists('type', $credential) &&
+        $credential['type'] === 'EmailCredential') {
+        $emailCredential = true;
+      }
+    }
   }
 
   $callback_url = urlencode($identity['id'] . '?action=register&nonce=' .
@@ -117,6 +129,7 @@ if($_GET['action'] === 'register') {
           <div class="masthead clearfix">
             <div class="inner">
               <?php if(!$registered) echo '<div class="alert alert-warning">WARNING: This identity isn\'t active yet! The next step is to register it with the global Web login network. <a class="alert-link" href="'. $registration_url .'">Click here to register</a>.</div>' ?>
+              <?php if(!$emailCredential) echo '<div class="alert alert-warning">WARNING: You don\'t have an email credential yet! <a class="alert-link" href="email">Click here to get one</a>.</div>' ?>
               <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
             </div>
           </div>
