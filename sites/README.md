@@ -30,3 +30,15 @@ To run the Login Mixnet, you will need to perform the following commands:
 # Enable the site: `a2ensite login.dev`.
 # Reload the Apache2 config: `service restart apache2`
 # Open a web browser to `http://login.dev/`
+
+Installing the Credential Issuer
+--------------------------------
+
+To run the Credential issuer, you will need to perform the following commands:
+
+# Create a host alias for `credentials.dev` in your `/etc/hosts` file and point it to your local machine.
+# Copy `credentials.dev.conf` to `/etc/apache2/sites-available/`.
+# Set BASEDIR in `/etc/apache2/sites-available/credentials.dev.conf` to the proper directory.
+# Enable the site: `a2ensite credentials.dev`.
+# Reload the Apache2 config: `service restart apache2`
+# Open a web browser to `http://credentials.dev/`
