@@ -67,11 +67,10 @@ function idp_sign($jsonld) {
   $options = array();
   $options['key'] = $privateKey['privateKeyPem'];
   $options['keyId'] = $privateKey['id'];
-  $signature = bedrock_sign((object)$jsonld, $options);
+  $jsonld_object = (object)$jsonld;
+  bedrock_sign($jsonld_object, $options);
 
-  var_dump($signature);
-
-  return (array)$signature;
+  return (array)$jsonld_object;
 }
 
 ?>

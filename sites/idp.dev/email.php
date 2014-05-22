@@ -25,20 +25,15 @@ if($identity && $_POST['email']) {
   array_push($identity['credential'], $signed);
 
   // write the identity file to the database
-  /*
   if(!write_identity($_SESSION['name'], $identity)) {
     $error = true;
     $error_message = 'Could not write the identity to the filesystem. ' .
       'Make sure the webserver has write permission to the db/ directory.';
   } else {
-    // set the login cookie
-    $_SESSION['name'] = $_POST['name'];
-    session_write_close();
-
     // redirect to the identity
-    header('Location: '. $identity_url);
+    header('Location: '. $identity['id']);
     die();
-  }*/
+  }
 }
 ?>
 
