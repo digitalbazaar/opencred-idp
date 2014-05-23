@@ -6,6 +6,8 @@ session_start();
 $identity = get_identity($_SESSION['name']);
 $registered = false;
 $emailCredential = false;
+$icResponseUrl = false;
+$icResponse = false;
 
 // generate a new nonce for the session if this isn't a POST
 if(empty($_POST)) {
@@ -66,6 +68,34 @@ if($_GET['action'] === 'register') {
     // FIXME: Make sure to set - $identity['sysRegistered'] = true;
     $registered = true;
   }
+} if($_GET['action'] === 'query' && $identity) {
+  // FIXME: Re-direct to login if not already logged in
+  $icResponseUrl = $_GET['callback'];
+  $response = array();
+  $response['@context'] = $identity['@context'];
+  $response['id'] = $identity['id'];
+  $response['credential'] = array();
+  $query = json_decode($_POST['query'], true);
+
+  // build the response
+  foreach(array_keys($query) as $key) {
+    if($key === '@context') {
+      continue;
+    }
+    foreach($identity['credential'] as $credential) {
+      if(array_key_exists($key, $credential['claim'])) {
+        $response[$key] = $credential['claim'][$key];
+
+        // add the credential information if it was requested
+        if($_GET['credentials'] === 'true') {
+          array_push($response['credential'], $credential);
+        }
+      }
+    }
+  }
+
+  $icResponse = json_encode($response, JSON_UNESCAPED_SLASHES);
+
 } else if($identity) {
   if(array_key_exists('sysRegistered', $identity)) {
     $registered = true;
@@ -118,7 +148,7 @@ if($_GET['action'] === 'register') {
     <![endif]-->
   </head>
 
-  <body>
+  <body onload='checkQuery();'>
 
     <div class="site-wrapper">
 
@@ -167,6 +197,9 @@ if($_GET['action'] === 'register') {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="query.js"></script>
+    <?php if($icResponseUrl) echo '<script>window.icResponseUrl = \'' . $icResponseUrl . '\';</script>'; ?>
+    <?php if($icResponse) echo '<script>window.icResponse = ' . $icResponse . ';</script>'; ?>
+    </script>
   </body>
 </html>
-
