@@ -50,7 +50,7 @@ if(!empty($_POST)) {
             <div class="inner">
               <h3 class="masthead-brand">Credential Issuer</h3>
               <ul class="nav masthead-nav">
-                <li class="active"><a href="./">Login</a></li>
+                <li class="active"><a href="#" onclick='login();'>Login</a></li>
               </ul>
             </div>
           </div>
@@ -83,5 +83,7 @@ if(!empty($_POST)) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="navigator.identity.js"></script>
+    <script src="login.js"></script>
   </body>
 </html>
