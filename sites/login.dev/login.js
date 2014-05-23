@@ -12,6 +12,44 @@ var icQueryChannel = 'icQuery';
 var hashname;
 
 /**
+ * Retrieves a query parameter by name.
+ *
+ * @param name the name of the query parameter to retrieve.
+ */
+function getParameterByName(name) {
+  var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+  return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+/**
+ * Performs a browser-based POST (as opposed to an XMLHttpRequest-based one).
+ *
+ * @param url the URL to POST the given data to.
+ * @param params the parameters to POST to the given URL.
+ */
+function post(url, params) {
+  // The rest of this code assumes you are not using a library.
+  // It can be made less wordy if you use one.
+  var form = document.createElement("form");
+  form.setAttribute('method', 'POST');
+  form.setAttribute('action', url);
+
+  for(var key in params) {
+    if(params.hasOwnProperty(key)) {
+      var hiddenField = document.createElement('input');
+      hiddenField.setAttribute('type', 'hidden');
+      hiddenField.setAttribute('name', key);
+      hiddenField.setAttribute('value', params[key]);
+
+      form.appendChild(hiddenField);
+    }
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+/**
  * Telehash packet handler.
  *
  * @param err an error, if one exists for the packet.
@@ -54,6 +92,19 @@ function packetHandler(err, packet, chan, callback) {
     var decrypted = JSON.parse(dCipher.output.data);
 
     console.log('tc identity:', decrypted);
+
+    // store the request
+    var request = window.icRequest;
+    localStorage.setItem(
+      'request:' + request.id, JSON.stringify(request));
+    var idpQueryUrl = decrypted.identityDocument +
+      '?action=query&credentials=' + request.credentials + '&domain=' +
+      request.domain + '&callback=' +
+      encodeURIComponent('http://login.dev/?response=' + request.id);
+
+    // re-direct the request to the target IdP
+    console.log('TARGET URL:', idpQueryUrl);
+    post(idpQueryUrl, {'query': JSON.stringify(request.query)});
   }
 
   // send an ack and recieve subsequent packets
@@ -61,22 +112,29 @@ function packetHandler(err, packet, chan, callback) {
 }
 
 /**
- * Initialize the connection to Telehash.
+ * Initialize the page to redirect or connect to Telehash.
  */
-function initTelehash() {
-  console.log("initializing connection to Telehash...", telehash);
-  telehash.init({}, function(err, hn) {
-    if(err) {
-      return console.log('tc debug: startup failed', err);
-    } else {
-      hashname = hn;
-      console.log('tc debug: startup success', hashname);
-    }
+function init() {
+  // check to see if a response should be posted immediately
+  var response = getParameterByName('response');
+  if(response) {
+    var request = JSON.parse(localStorage.getItem('request:' + response));
+    post(request.callback, {response: JSON.stringify(window.icResponse)});
+  } else {
+    console.log("initializing connection to Telehash...", telehash);
+    telehash.init({}, function(err, hn) {
+      if(err) {
+        return console.log('tc debug: startup failed', err);
+      } else {
+        hashname = hn;
+        console.log('tc debug: startup success', hashname);
+      }
 
-    // join the identity credentials query channel
-    hashname.listen(icQueryChannel, packetHandler);
-    console.log('tc debug: listening on '+ icQueryChannel);
-  });
+      // join the identity credentials query channel
+      hashname.listen(icQueryChannel, packetHandler);
+      console.log('tc debug: listening on '+ icQueryChannel);
+    });
+  }
 }
 
 /**
