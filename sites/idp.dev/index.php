@@ -39,6 +39,8 @@ if(!empty($_POST)) {
     }
   }
 }
+
+session_write_close();
 ?>
 
 <!DOCTYPE html>
