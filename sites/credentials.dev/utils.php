@@ -45,7 +45,7 @@ function write_identity($name, $identity) {
  * @param $jsonld the JSON-LD document to sign.
  * @return a signed JSON-LD document
  */
-function credentials_sign($jsonld) {
+function credential_sign($jsonld) {
   $privateKey = json_decode(file_get_contents('privatekey.jsonld'), true);
   $options = array();
   $options['key'] = $privateKey['privateKeyPem'];

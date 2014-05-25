@@ -84,26 +84,26 @@ payment may be sent to this address. Since this is a demonstration service,
 we will not try to verify your home address before issuing the credential to
 you.
               </p>
-              <form class="form-horizontal" role="form" onsubmit="requestCredential('address');">
+              <form class="form-horizontal" role="form" action="issue?type=BusinessAddressCredential" method="POST">
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="streetAddress">Street Address</label>
-                  <div class="col-sm-8"><input id="streetAddress" type="text" class="form-control" placeholder="Street address" required value="123 Fake Street"></div>
+                  <div class="col-sm-8"><input name="streetAddress" type="text" class="form-control" placeholder="Street address" required value="123 Fake Street"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="addressLocality">Locality</label>
-                  <div class="col-sm-8"><input id="addressLocality" type="text" class="form-control" placeholder="City or Town" required value="Smallville"></div>
+                  <div class="col-sm-8"><input name="addressLocality" type="text" class="form-control" placeholder="City or Town" required value="Smallville"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="addressRegion">Region</label>
-                  <div class="col-sm-8"><input id="addressRegion" type="text" class="form-control" placeholder="State or Region" required value="Statey"></div>
+                  <div class="col-sm-8"><input name="addressRegion" type="text" class="form-control" placeholder="State or Region" required value="Statey"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="postalCode">Postal Code</label>
-                  <div class="col-sm-8"><input id="postalCode" type="text" class="form-control" placeholder="Postal code" required value="93042-0492"></div>
+                  <div class="col-sm-8"><input name="postalCode" type="text" class="form-control" placeholder="Postal code" required value="93042-0492"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="addressCountry">Country</label>
-                  <div class="col-sm-8"><input id="addressCountry" type="text" class="form-control" placeholder="Country" required value="Testlandia"></div>
+                  <div class="col-sm-8"><input name="addressCountry" type="text" class="form-control" placeholder="Country" required value="Testlandia"></div>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Issue Address Credential</button>
               </form>
@@ -128,10 +128,10 @@ like the Social Security Administration. Since this is a demonstration service,
 we will not try to verify your age before issuing the credential to
 you.
               </p>
-              <form class="form-horizontal" role="form" onsubmit="requestCredential('age');">
+              <form class="form-horizontal" role="form" action="issue?type=ProofOfAgeCredential" method="POST">
                 <div class="form-group">
-                  <label class="col-sm-3 control-label" for="ageProof">Proof of Age</label>
-                  <div class="col-sm-8"><input id="ageProof" type="text" class="form-control" placeholder="You are at least this many years old" required value="18"></div>
+                  <label class="col-sm-3 control-label" for="proofOfAge">Proof of Age</label>
+                  <div class="col-sm-8"><input name="proofOfAge" type="text" class="form-control" placeholder="You are at least this many years old" required value="18"></div>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Issue Age Credential</button>
               </form>
@@ -155,74 +155,74 @@ qualified to operate a motor vehicle in your country. Since this is a
 demonstration service, we will not try to verify your driving ability or
 home address before issuing the credential to you.
               </p>
-              <form class="form-horizontal" role="form" onsubmit="requestCredential('driversLicense');">
+              <form class="form-horizontal" role="form" action="issue?type=DriversLicenseCredential" method="POST">
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="customerNumber">Customer Number</label>
-                  <div class="col-sm-8"><input id="customerNumber" type="text" class="form-control" placeholder="The organization ID number for you" required value="Y84-12-9372"></div>
+                  <div class="col-sm-8"><input name="customerNumber" type="text" class="form-control" placeholder="The organization ID number for you" required value="Y84-12-9372"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="name">Name</label>
-                  <div class="col-sm-8"><input id="name" type="text" class="form-control" placeholder="Your full name" required value="John Doe"></div>
+                  <div class="col-sm-8"><input name="name" type="text" class="form-control" placeholder="Your full name" required value="John Doe"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="gender">Gender</label>
-                  <div class="col-sm-8"><input id="gender" type="text" class="form-control" placeholder="'Male' or 'Female'" required value="Male"></div>
+                  <div class="col-sm-8"><input name="gender" type="text" class="form-control" placeholder="'Male' or 'Female'" required value="Male"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="birthday">Date of Birth</label>
-                  <div class="col-sm-8"><input id="birthday" type="text" class="form-control" placeholder="When you were born (YYYY/MM/DD)" required value="1975/04/22"></div>
+                  <div class="col-sm-8"><input name="birthday" type="text" class="form-control" placeholder="When you were born (YYYY/MM/DD)" required value="1975/04/22"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="eyeColor">Eye Color</label>
-                  <div class="col-sm-8"><input id="eyeColor" type="text" class="form-control" placeholder="The color of your eyes" required value="Brown"></div>
+                  <div class="col-sm-8"><input name="eyeColor" type="text" class="form-control" placeholder="The color of your eyes" required value="Brown"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="hairColor">Hair Color</label>
-                  <div class="col-sm-8"><input id="hairColor" type="text" class="form-control" placeholder="The color of your hair" required value="Black"></div>
+                  <div class="col-sm-8"><input name="hairColor" type="text" class="form-control" placeholder="The color of your hair" required value="Black"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="height">Height</label>
-                  <div class="col-sm-8"><input id="height" type="text" class="form-control" placeholder="How tall you are in feet and inches" required value="5' 5&quot;"></div>
+                  <div class="col-sm-8"><input name="height" type="text" class="form-control" placeholder="How tall you are in feet and inches" required value="5' 5&quot;"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="driverClass">Class</label>
-                  <div class="col-sm-8"><input id="driverClass" type="text" class="form-control" placeholder="Vehicle classes that you are allowed to drive" required value="Car, Motorcycle"></div>
+                  <div class="col-sm-8"><input name="driverClass" type="text" class="form-control" placeholder="Vehicle classes that you are allowed to drive" required value="Car, Motorcycle"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="driverRestrictions">Restrictions</label>
-                  <div class="col-sm-8"><input id="driverRestrictions" type="text" class="form-control" placeholder="Any restrictions when you drive?" required value="Corrective Lenses (20/50 vision)"></div>
+                  <div class="col-sm-8"><input name="driverRestrictions" type="text" class="form-control" placeholder="Any restrictions when you drive?" required value="Corrective Lenses (20/50 vision)"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="organDonor">Organ Donor</label>
-                  <div class="col-sm-8"><input id="organDonor" type="text" class="form-control" placeholder="'Yes', if you would like to donate your organs if you die" required value="Yes"></div>
+                  <div class="col-sm-8"><input name="organDonor" type="text" class="form-control" placeholder="'Yes', if you would like to donate your organs if you die" required value="Yes"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="streetAddress">Street Address</label>
-                  <div class="col-sm-8"><input id="streetAddress" type="text" class="form-control" placeholder="Street address" required value="123 Fake Street"></div>
+                  <div class="col-sm-8"><input name="streetAddress" type="text" class="form-control" placeholder="Street address" required value="123 Fake Street"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="addressLocality">Locality</label>
-                  <div class="col-sm-8"><input id="addressLocality" type="text" class="form-control" placeholder="City or Town" required value="Smallville"></div>
+                  <div class="col-sm-8"><input name="addressLocality" type="text" class="form-control" placeholder="City or Town" required value="Smallville"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="addressRegion">Region</label>
-                  <div class="col-sm-8"><input id="addressRegion" type="text" class="form-control" placeholder="State or Region" required value="Statey"></div>
+                  <div class="col-sm-8"><input name="addressRegion" type="text" class="form-control" placeholder="State or Region" required value="Statey"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="postalCode">Postal Code</label>
-                  <div class="col-sm-8"><input id="postalCode" type="text" class="form-control" placeholder="Postal code" required value="93042-0492"></div>
+                  <div class="col-sm-8"><input name="postalCode" type="text" class="form-control" placeholder="Postal code" required value="93042-0492"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="addressCountry">Country</label>
-                  <div class="col-sm-8"><input id="addressCountry" type="text" class="form-control" placeholder="Country" required value="Testlandia"></div>
+                  <div class="col-sm-8"><input name="addressCountry" type="text" class="form-control" placeholder="Country" required value="Testlandia"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="created">Issued</label>
-                  <div class="col-sm-8"><input id="created" type="text" class="form-control" placeholder="Date the license was issued (YYYY/MM/DD)" required value="2014-02-11"></div>
+                  <div class="col-sm-8"><input name="created" type="text" class="form-control" placeholder="Date the license was issued (YYYY/MM/DD)" required value="2014-02-11"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="expires">Expires</label>
-                  <div class="col-sm-8"><input id="expires" type="text" class="form-control" placeholder="Date the license expires (YYYY/MM/DD)" required value="2018-02-11"></div>
+                  <div class="col-sm-8"><input name="expires" type="text" class="form-control" placeholder="Date the license expires (YYYY/MM/DD)" required value="2018-02-11"></div>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Issue Driver's License Credential</button>
               </form>
@@ -246,38 +246,38 @@ documents necessary to travel to other countries. Since this is a demonstration
 service, we will not try to verify your travel eligibility with your
 government before issuing the credential to you.
               </p>
-              <form class="form-horizontal" role="form" onsubmit="requestCredential('passport');">
+              <form class="form-horizontal" role="form" action="issue?type=PassportCredential" method="POST">
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="passportNumber">Passport Number</label>
-                  <div class="col-sm-8"><input id="passportNumber" type="text" class="form-control" placeholder="Your passport ID number" required value="837847822"></div>
+                  <div class="col-sm-8"><input name="passportNumber" type="text" class="form-control" placeholder="Your passport ID number" required value="837847822"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="familyName">Family Name</label>
-                  <div class="col-sm-8"><input id="familyName" type="text" class="form-control" placeholder="Your family (last) name" required value="Doe"></div>
+                  <div class="col-sm-8"><input name="familyName" type="text" class="form-control" placeholder="Your family (last) name" required value="Doe"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="givenName">Given Names</label>
-                  <div class="col-sm-8"><input id="givenName" type="text" class="form-control" placeholder="Your given (first) name" required value="John Quincy"></div>
+                  <div class="col-sm-8"><input name="givenName" type="text" class="form-control" placeholder="Your given (first) name" required value="John Quincy"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="gender">Gender</label>
-                  <div class="col-sm-8"><input id="gender" type="text" class="form-control" placeholder="Your sex ('Male' or 'Female')" required value="Male"></div>
+                  <div class="col-sm-8"><input name="gender" type="text" class="form-control" placeholder="Your sex ('Male' or 'Female')" required value="Male"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="nationality">Nationality</label>
-                  <div class="col-sm-8"><input id="nationality" type="text" class="form-control" placeholder="The nation of your citizenship" required value="United States of America"></div>
+                  <div class="col-sm-8"><input name="nationality" type="text" class="form-control" placeholder="The nation of your citizenship" required value="United States of America"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="birthplace">Place of Birth</label>
-                  <div class="col-sm-8"><input id="birthplace" type="text" class="form-control" placeholder="The country where you were born" required value="Canada"></div>
+                  <div class="col-sm-8"><input name="birthplace" type="text" class="form-control" placeholder="The country where you were born" required value="Canada"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="created">Issued</label>
-                  <div class="col-sm-8"><input id="created" type="text" class="form-control" placeholder="Date the passport was issued (YYYY/MM/DD)" required value="2014-03-25"></div>
+                  <div class="col-sm-8"><input name="created" type="text" class="form-control" placeholder="Date the passport was issued (YYYY/MM/DD)" required value="2014-03-25"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="expires">Expires</label>
-                  <div class="col-sm-8"><input id="expires" type="text" class="form-control" placeholder="Date the passport expires (YYYY/MM/DD)" required value="2024-03-25"></div>
+                  <div class="col-sm-8"><input name="expires" type="text" class="form-control" placeholder="Date the passport expires (YYYY/MM/DD)" required value="2024-03-25"></div>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Issue Passport Credential</button>
               </form>
@@ -285,8 +285,6 @@ government before issuing the credential to you.
           </div>
         </div>
       </div>
-
-      <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
     </div>
 
   </div></div></div>
