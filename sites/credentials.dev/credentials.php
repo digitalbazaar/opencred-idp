@@ -3,13 +3,22 @@ include 'utils.php';
 session_start();
 
 $credentials = false;
+$credentials_json = false;
 
 // attempt a login if login information was POSTed
 if(!empty($_POST)) {
-  // FIXME: implement login
-  $credentials = json_encode(json_decode($_POST['response'], true),
-    JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
+  $credentials = json_decode($_POST['response'], true);
+  $credentials_json =
+    json_encode($credentials, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
+
+  // update the session information
+  $_SESSION['id'] = $credentials['id'];
+  if(array_key_exists('email', $credentials)) {
+    $_SESSION['email'] = $credentials['email'];
+  }
 }
+
+session_write_close();
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +63,7 @@ if(!empty($_POST)) {
             <div class="inner">
 
             <h2 class="form-signin-heading">Retrieved Credentials</h2>
-            <pre style="text-align: left;"><?php echo $credentials; ?></pre>
+            <pre style="text-align: left;"><?php echo $credentials_json; ?></pre>
 
             <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
           </div>
