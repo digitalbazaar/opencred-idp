@@ -19,6 +19,20 @@ a:hover {
   border: 1px solid #333;
 }
 
+/* Panel colors */
+
+.panel-default {
+  color: #dbe7db;
+  background: #6a4040;
+  background-color: #53885e;
+  border: 1px solid #333;
+}
+
+.panel-default > .panel-heading {
+  color: #dbe7db;
+  background: #6a4040;
+  /*background-color: #6a4040;*/
+}
 
 /*
  * Base structure
