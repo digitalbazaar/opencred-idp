@@ -2,7 +2,8 @@
 include 'utils.php';
 session_start();
 
-print_r(array_keys($_POST));
+$icPatch = false;
+$icWriteUrl = false;
 
 if(!empty($_SESSION) && !empty($_POST) && $_GET['type']) {
   // set the email address for the identity
@@ -47,6 +48,7 @@ if(!empty($_SESSION) && !empty($_POST) && $_GET['type']) {
     $address['addressCountry'] = $_POST['addressCountry'];
     $claim['address'] = $address;
   } else if($_GET['type'] === 'PassportCredential') {
+    // build the passport credential
     $claim['passportNumber'] = $_POST['passportNumber'];
     $claim['familyName'] = $_POST['familyName'];
     $claim['givenName'] = $_POST['givenName'];
@@ -60,9 +62,19 @@ if(!empty($_SESSION) && !empty($_POST) && $_GET['type']) {
   $credential['type'] = $_GET['type'];
   $credential['claim'] = $claim;
 
+  // sign the credential
   $signed = credential_sign($credential);
 
-  echo "<pre>" . json_encode($signed, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES) . "</pre>";
+  // create the patch command for the identity
+  $patch = array();
+  $patch['op'] = 'add';
+  $patch['path'] = 'https://w3id.org/identity#credential';
+  $patch['value'] = $signed;
+
+  // set the identity write URL command
+  $icWriteUrl = $_SESSION['id'] . '?action=patch';
+
+  $icPatch = json_encode($patch, JSON_UNESCAPED_SLASHES);
 }
 ?>
 
@@ -70,10 +82,14 @@ if(!empty($_SESSION) && !empty($_POST) && $_GET['type']) {
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <script>
+      <?php if($icPatch) echo 'window.icPatch = '. $icPatch .';'; ?>
+      <?php if($icWriteUrl) echo 'window.icWriteUrl = \''. $icWriteUrl .'\';'; ?>
+    </script>
     <script src="issue.js"></script>
   </head>
 
-  <body>
+  <body onload="checkCredential();">
   </body>
 </html>
 

@@ -37,7 +37,8 @@ function post(url, params) {
  * the environment.
  */
 function checkCredential() {
-  if(window.icCredential) {
-    post(window.icRegisterUrl, {credential: JSON.stringify(window.icCredential)});
+  console.log('checking credetian');
+  if(window.icPatch) {
+    post(window.icWriteUrl, {credential: JSON.stringify(window.icPatch)});
   }
 }
