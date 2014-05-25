@@ -1,5 +1,5 @@
 /*!
- * Login functionality for credential's website.
+ * Javascript functionality for Identity Provider website.
  *
  * @author Manu Sporny
  */
@@ -39,4 +39,20 @@ function checkQuery() {
   if(window.icResponseUrl) {
     post(window.icResponseUrl, {response: JSON.stringify(window.icResponse)});
   }
+}
+
+/**
+ * Adds a credential by re-posting it to a different verify URL.
+ */
+function addCredential() {
+  if(window.icPatch) {
+    post(window.icPatchUrl, {credential: JSON.stringify(window.icPatch)});
+  }
+}
+
+/**
+ * Starts the login process by attempting to get id and email credentials.
+ */
+function redirectToIdentity() {
+  window.location = 'http://idp.dev/';
 }

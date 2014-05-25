@@ -4,10 +4,35 @@ session_start();
 
 // get the identity data
 $identity = get_identity($_SESSION['name']);
+$icPatch = false;
+$icPatchUrl = false;
 $registered = false;
 $emailCredential = false;
 $icResponseUrl = false;
+$credentials_url = 'http://credentials.dev/';
 $icResponse = false;
+$error = false;
+$error_message = false;
+
+// initialize page variables based on information in the identity
+if($identity) {
+  if(array_key_exists('sysRegistered', $identity)) {
+    $registered = true;
+  }
+  if(array_key_exists('credential', $identity)) {
+    foreach($identity['credential'] as $credential) {
+      if(array_key_exists('type', $credential) &&
+        $credential['type'] === 'EmailCredential') {
+        $emailCredential = true;
+      }
+    }
+  }
+
+  $callback_url = urlencode($identity['id'] . '?action=register&nonce=' .
+  $_SESSION['nonce']);
+  $registration_url = 'http://login.dev/register?identity=' .
+    urlencode($identity['id']) . '&callback=' . $callback_url;
+}
 
 // generate a new nonce for the session if this isn't a POST
 if(empty($_POST)) {
@@ -17,7 +42,7 @@ if(empty($_POST)) {
   session_write_close();
 }
 
-if($_GET['action'] === 'register') {
+if(array_key_exists('action', $_GET) && $_GET['action'] === 'register') {
   if($_GET['nonce'] !== $_SESSION['nonce']) {
     $error = true;
     $error_message = 'The nonce associated with the request is invalid. ' .
@@ -68,7 +93,8 @@ if($_GET['action'] === 'register') {
     // FIXME: Make sure to set - $identity['sysRegistered'] = true;
     $registered = true;
   }
-} if($_GET['action'] === 'query' && $identity) {
+} else if(array_key_exists('action', $_GET) &&
+  $_GET['action'] === 'query' && $identity) {
   // FIXME: Re-direct to login if not already logged in
   $icResponseUrl = $_GET['callback'];
   $response = array();
@@ -96,26 +122,28 @@ if($_GET['action'] === 'register') {
 
   $icResponse = json_encode($response, JSON_UNESCAPED_SLASHES);
 
-} else if($identity) {
-  if(array_key_exists('sysRegistered', $identity)) {
-    $registered = true;
+} else if(array_key_exists('action', $_GET) &&
+  $_GET['action'] === 'patch' && $identity) {
+  $icPatch = json_decode($_POST['credential'], true);
+  $icPatchUrl = $identity['id'] . '?action=verify_patch';
+} else if(array_key_exists('action', $_GET) &&
+  $_GET['action'] === 'verify_patch' && $identity) {
+
+  $icPatch = json_decode($_POST['credential'], true);
+
+  // set the credential entry if it doesn't exist
+  if(!array_key_exists('credential', $identity)) {
+    $identity['credential'] = array();
   }
 
-  if(array_key_exists('credential', $identity)) {
-    foreach($identity['credential'] as $credential) {
-      if(array_key_exists('type', $credential) &&
-        $credential['type'] === 'EmailCredential') {
-        $emailCredential = true;
-      }
-    }
-  }
+  // add the credential and write it to disk
+  array_push($identity['credential'], $icPatch['value']);
+  write_identity($_SESSION['name'], $identity);
 
-  $callback_url = urlencode($identity['id'] . '?action=register&nonce=' .
-    $_SESSION['nonce']);
-  $registration_url = 'http://login.dev/register?identity=' .
-    urlencode($identity['id']) . '&callback=' . $callback_url;
+  // redirect to identity page;
+  header('Location: ' . $identity['id']);
+  die();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -154,35 +182,20 @@ if($_GET['action'] === 'register') {
 
       <div class="site-wrapper-inner">
 
-
         <div class="cover-container">
-          <div class="masthead clearfix">
-            <div class="inner">
-              <?php if(!$registered) echo '<div class="alert alert-warning">WARNING: This identity isn\'t active yet! The next step is to register it with the global Web login network. <a class="alert-link" href="'. $registration_url .'">Click here to register</a>.</div>' ?>
-              <?php if(!$emailCredential) echo '<div class="alert alert-warning">WARNING: You don\'t have an email credential yet! <a class="alert-link" href="email">Click here to get one</a>.</div>' ?>
-              <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
-            </div>
-          </div>
-
-        <div class="cover-container">
-
-          <div class="masthead clearfix">
-            <div class="inner">
-              <h3 class="masthead-brand"></h3>
-            </div>
-          </div>
 
           <div class="inner cover">
 
             <h2 class="form-signin-heading"><?php echo $_SESSION['name']; ?></h2>
-            <pre style="text-align: left;"><?php echo json_encode($identity, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES); ?></pre>
 
-          </div>
+            <?php if(!$registered) echo '<div class="alert alert-warning">WARNING: This identity isn\'t active yet! The next step is to register it with the global Web login network. <a class="alert-link" href="'. $registration_url .'">Click here to register</a>.</div>' ?>
+            <?php if($registered && !$emailCredential) echo '<div class="alert alert-warning">WARNING: You don\'t have an email credential yet! <a class="alert-link" href="email">Click here to get one</a>.</div>' ?>
+            <?php if($registered && $emailCredential && !$icPatch) echo '<div class="alert alert-info">You may now associate credentials with this identity. <a class="alert-link" href="'. $credentials_url .'">Click here to add credentials</a>.</div>' ?>
+            <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
 
-          <div class="mastfoot">
-            <div class="inner">
-              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-            </div>
+            <?php if($icPatch) echo '<p>Do you want the following credential to be stored with your identity? <div class="btn-group"><button type="button" class="btn btn-success" onclick="addCredential();">Yes</button><button type="button" class="btn btn-danger" onclick="redirectToIdentity();">No</button></div>'; ?>
+            <pre style="margin-top: 10px; text-align: left;"><?php if($icPatch) echo json_encode($icPatch['value'], JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES); else echo json_encode($identity, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES); ?></pre>
+
           </div>
 
         </div>
@@ -197,9 +210,11 @@ if($_GET['action'] === 'register') {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <script src="query.js"></script>
+    <script src="util.js"></script>
     <?php if($icResponseUrl) echo '<script>window.icResponseUrl = \'' . $icResponseUrl . '\';</script>'; ?>
     <?php if($icResponse) echo '<script>window.icResponse = ' . $icResponse . ';</script>'; ?>
+    <?php if($icPatch) echo '<script>window.icPatch = ' . json_encode($icPatch, JSON_UNESCAPED_SLASHES) . ';</script>'; ?>
+    <?php if($icPatchUrl) echo '<script>window.icPatchUrl = \'' . $icPatchUrl . '\';</script>'; ?>
     </script>
   </body>
 </html>
