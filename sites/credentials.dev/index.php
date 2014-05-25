@@ -84,7 +84,7 @@ payment may be sent to this address. Since this is a demonstration service,
 we will not try to verify your home address before issuing the credential to
 you.
               </p>
-              <form class="form-horizontal" role="form" action="issue?type=BusinessAddressCredential" method="POST">
+              <form class="form-horizontal" role="form" action="issue?type=BillingAddressCredential" method="POST">
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="streetAddress">Street Address</label>
                   <div class="col-sm-8"><input name="streetAddress" type="text" class="form-control" placeholder="Street address" required value="123 Fake Street"></div>
@@ -217,8 +217,8 @@ home address before issuing the credential to you.
                   <div class="col-sm-8"><input name="addressCountry" type="text" class="form-control" placeholder="Country" required value="Testlandia"></div>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-3 control-label" for="created">Issued</label>
-                  <div class="col-sm-8"><input name="created" type="text" class="form-control" placeholder="Date the license was issued (YYYY/MM/DD)" required value="2014-02-11"></div>
+                  <label class="col-sm-3 control-label" for="issued">Issued</label>
+                  <div class="col-sm-8"><input name="issued" type="text" class="form-control" placeholder="Date the license was issued (YYYY/MM/DD)" required value="2014-02-11"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="expires">Expires</label>
@@ -272,8 +272,8 @@ government before issuing the credential to you.
                   <div class="col-sm-8"><input name="birthplace" type="text" class="form-control" placeholder="The country where you were born" required value="Canada"></div>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-3 control-label" for="created">Issued</label>
-                  <div class="col-sm-8"><input name="created" type="text" class="form-control" placeholder="Date the passport was issued (YYYY/MM/DD)" required value="2014-03-25"></div>
+                  <label class="col-sm-3 control-label" for="issued">Issued</label>
+                  <div class="col-sm-8"><input name="issued" type="text" class="form-control" placeholder="Date the passport was issued (YYYY/MM/DD)" required value="2014-03-25"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="expires">Expires</label>
