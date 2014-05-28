@@ -12,33 +12,33 @@ Installing the Personal Identity Provider
 To run the Personal Identity Provider, you will need to perform the following
 commands:
 
-# Create a host alias for `idp.dev` in your `/etc/hosts` file and point it to your local machine.
-# Copy `idp.dev.conf` to `/etc/apache2/sites-available/`.
-# Set BASEDIR in `/etc/apache2/sites-available/idp.dev.conf` to the proper directory.
-# Enable the site: `a2ensite idp.dev`.
-# Reload the Apache2 config: `service restart apache2`
-# Open a web browser to `http://idp.dev/`
+1. Create a host alias for `idp.dev` in your `/etc/hosts` file and point it to your local machine.
+1. Copy `idp.dev.conf` to `/etc/apache2/sites-available/`.
+1. Set BASEDIR in `/etc/apache2/sites-available/idp.dev.conf` to the proper directory.
+1. Enable the site: `a2ensite idp.dev`.
+1. Reload the Apache2 config: `service restart apache2`
+1. Open a web browser to `http://idp.dev/`
 
 Installing the Login Mixnet
 ---------------------------
 
 To run the Login Mixnet, you will need to perform the following commands:
 
-# Create a host alias for `login.dev` in your `/etc/hosts` file and point it to your local machine.
-# Copy `login.dev.conf` to `/etc/apache2/sites-available/`.
-# Set BASEDIR in `/etc/apache2/sites-available/login.dev.conf` to the proper directory.
-# Enable the site: `a2ensite login.dev`.
-# Reload the Apache2 config: `service restart apache2`
-# Open a web browser to `http://login.dev/`
+1. Create a host alias for `login.dev` in your `/etc/hosts` file and point it to your local machine.
+1. Copy `login.dev.conf` to `/etc/apache2/sites-available/`.
+1. Set BASEDIR in `/etc/apache2/sites-available/login.dev.conf` to the proper directory.
+1. Enable the site: `a2ensite login.dev`.
+1. Reload the Apache2 config: `service restart apache2`
+1. Open a web browser to `http://login.dev/`
 
 Installing the Credential Issuer
 --------------------------------
 
 To run the Credential issuer, you will need to perform the following commands:
 
-# Create a host alias for `credentials.dev` in your `/etc/hosts` file and point it to your local machine.
-# Copy `credentials.dev.conf` to `/etc/apache2/sites-available/`.
-# Set BASEDIR in `/etc/apache2/sites-available/credentials.dev.conf` to the proper directory.
-# Enable the site: `a2ensite credentials.dev`.
-# Reload the Apache2 config: `service restart apache2`
-# Open a web browser to `http://credentials.dev/`
+1. Create a host alias for `credentials.dev` in your `/etc/hosts` file and point it to your local machine.
+1. Copy `credentials.dev.conf` to `/etc/apache2/sites-available/`.
+1. Set BASEDIR in `/etc/apache2/sites-available/credentials.dev.conf` to the proper directory.
+1. Enable the site: `a2ensite credentials.dev`.
+1. Reload the Apache2 config: `service restart apache2`
+1. Open a web browser to `http://credentials.dev/`
