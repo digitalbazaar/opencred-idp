@@ -14,6 +14,14 @@ $icResponse = false;
 $error = false;
 $error_message = false;
 
+// generate a new nonce for the session if this isn't a POST
+if(empty($_POST)) {
+  $nonceSource = session_id() . microtime(true);
+  $nonce = substr(hash('sha256', $nonceSource), 0, 10);
+  $_SESSION['nonce'] = $nonce;
+  session_write_close();
+}
+
 // initialize page variables based on information in the identity
 if($identity) {
   if(array_key_exists('sysRegistered', $identity)) {
@@ -32,14 +40,6 @@ if($identity) {
   $_SESSION['nonce']);
   $registration_url = 'http://login.dev/register?identity=' .
     urlencode($identity['id']) . '&callback=' . $callback_url;
-}
-
-// generate a new nonce for the session if this isn't a POST
-if(empty($_POST)) {
-  $nonceSource = session_id() . microtime(true);
-  $nonce = substr(hash('sha256', $nonceSource), 0, 10);
-  $_SESSION['nonce'] = $nonce;
-  session_write_close();
 }
 
 if(array_key_exists('action', $_GET) && $_GET['action'] === 'register') {

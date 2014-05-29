@@ -3,8 +3,9 @@ Setting up a Test Environment
 
 To setup a test environment, you will need the following pieces of software:
 
-* Apache2 (>= 2.4.7)
-* PHP5 (>= 5.5.8)
+* apache2 (>= 2.4.7)
+* php5 (>= 5.5.8)
+* php5-json (>= 1.3.1)
 
 Installing the Personal Identity Provider
 -----------------------------------------
