@@ -1,6 +1,0 @@
-{
-    "@context": "https://w3id.org/identity/v1",
-    "id": "http://idp.dev/idp-key-1",
-    "owner": "http://idp.dev/idp",
-    "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5eaKfxS7rNY3r0AfMQBk\nEHXamryrAq+slaiW00lNumRAQJ6boeaC+Pr17Lv4jD1hf7VTK6F8a/MCBBWrKoHT\nKLZzHnKO0Vcq1MRNnWG8xtBl1q2QfAFVv18ifdxWlP/6C6nDHv3ygDFXKTMRmBa5\nqWH5nMnvkdQE585LkiPHupfsQmELGzs94C183N86SPQjOBHjsqikKa1nf66Q3Ldp\nqtGoO/UL85VvaOL1gFWbxHiJoLA0JqOMNQ6wNhkuOqC16mG9XFx7qDC2ZuMr4wPw\n7L+9zs8eLZfloCUrTneYxGPDyGBv8LQra4OJXPfcSodZTphygQ+hhm2bLPAlEJqO\nJwIDAQAB\n-----END PUBLIC KEY-----\n"
-}
