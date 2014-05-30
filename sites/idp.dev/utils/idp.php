@@ -13,7 +13,8 @@ if(!file_exists($TOPDIR . '/config.php')) {
 
 // generate and save a public/private keypair for the site if none exists
 if(!file_exists($TOPDIR . '/idp-key-1.private.jsonld') ||
-  !file_exists($TOPDIR . '/idp-key-1.jsonld')) {
+  !file_exists($TOPDIR . '/idp-key-1.jsonld') ||
+  !file_exists($TOPDIR . '/idp.jsonld')) {
 
   $config = array(
     'private_key_bits' => 2048,
@@ -41,8 +42,19 @@ if(!file_exists($TOPDIR . '/idp-key-1.private.jsonld') ||
   $public_key_jsonld = array();
   $public_key_jsonld['@context'] = 'https://w3id.org/identity/v1';
   $public_key_jsonld['id'] = $GLOBALS['idp_site'] . 'idp-key-1';
+  $public_key_jsonld['type'] = 'CryptographicKey';
   $public_key_jsonld['owner'] = $GLOBALS['idp_site'] . 'idp';
+  $public_key_jsonld['label'] = 'Personal Identity Provider Signing Key';
   $public_key_jsonld['publicKeyPem'] = $public_key;
+
+  // create the public key JSON-LD data
+  $idp_jsonld = array();
+  $idp_jsonld['@context'] = 'https://w3id.org/identity/v1';
+  $idp_jsonld['id'] = $GLOBALS['idp_site'] . 'idp';
+  $idp_jsonld['publicKey'] = array(array(
+    'id' => $public_key_jsonld['id'],
+    'label' => $public_key_jsonld['label']
+  ));
 
   $private_key_written =
     file_put_contents($TOPDIR . '/idp-key-1.private.jsonld', json_encode(
@@ -50,6 +62,9 @@ if(!file_exists($TOPDIR . '/idp-key-1.private.jsonld') ||
   $public_key_written =
     file_put_contents($TOPDIR . '/idp-key-1.jsonld', json_encode(
       $public_key_jsonld, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES), LOCK_EX);
+  $idp_written =
+    file_put_contents($TOPDIR . '/idp.jsonld', json_encode(
+      $idp_jsonld, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES), LOCK_EX);
 
   if(!$private_key_written) {
     echo 'Failed to write the private key to the filesystem. Please make ' .
@@ -59,6 +74,12 @@ if(!file_exists($TOPDIR . '/idp-key-1.private.jsonld') ||
   if(!$public_key_written) {
     echo 'Failed to write the public key to the filesystem. Please make ' .
       'sure that the web server has write permission to the website directory.';
+    die();
+  }
+  if(!$idp_written) {
+    echo 'Failed to write the IdP identity document to the filesystem. ' .
+      'Please make sure that the web server has write permission to the ' .
+      'website directory.';
     die();
   }
 }

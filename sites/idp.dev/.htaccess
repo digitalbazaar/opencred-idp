@@ -5,6 +5,7 @@ AddHandler application/x-httpd-php .htm .html
 RewriteEngine On 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^idp-key-1$ idp-key-1.jsonld [NC]
+RewriteRule ^idp$ idp.jsonld [NC]
 RewriteRule ^(create|email|about)$ $1.php [NC]
 RewriteRule ^([^\.]+)$ identity.php [NC]
 
