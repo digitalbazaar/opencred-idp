@@ -1,5 +1,7 @@
 <?php
-include 'utils.php';
+include('config.php');
+include('utils/idp.php');
+
 session_start();
 
 if($_SESSION['name']) {
@@ -59,7 +61,7 @@ if(!empty($_POST)) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Cover Template for Bootstrap</title>
+    <title>Create Identity</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -92,9 +94,9 @@ if(!empty($_POST)) {
             <div class="inner">
               <h3 class="masthead-brand">Personal Identity Provider</h3>
               <ul class="nav masthead-nav">
-                <li><a href="./">Login</a></li>
+                <li><a href="./">Home</a></li>
                 <li class="active"><a href="create">Create</a></li>
-                <li><a href="admin">Admin</a></li>
+                <li><a href="about">About</a></li>
               </ul>
             </div>
           </div>
@@ -111,12 +113,6 @@ if(!empty($_POST)) {
               <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
             </form>
 
-          </div>
-
-          <div class="mastfoot">
-            <div class="inner">
-              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-            </div>
           </div>
 
         </div>

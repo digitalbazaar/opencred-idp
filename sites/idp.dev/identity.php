@@ -1,5 +1,6 @@
 <?php
-include "utils.php";
+include('config.php');
+include('utils/idp.php');
 session_start();
 
 // get the identity data
@@ -9,7 +10,7 @@ $icPatchUrl = false;
 $registered = false;
 $emailCredential = false;
 $icResponseUrl = false;
-$credentials_url = 'http://credentials.dev/';
+$credentials_url = $GLOBALS['credential_site'];
 $icResponse = false;
 $error = false;
 $error_message = false;
@@ -37,8 +38,8 @@ if($identity) {
   }
 
   $callback_url = urlencode($identity['id'] . '?action=register&nonce=' .
-  $_SESSION['nonce']);
-  $registration_url = 'http://login.dev/register?identity=' .
+    $_SESSION['nonce']);
+  $registration_url = $GLOBALS['login_site'] . 'register?identity=' .
     urlencode($identity['id']) . '&callback=' . $callback_url;
 }
 

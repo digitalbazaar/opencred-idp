@@ -55,7 +55,7 @@ session_write_close();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Cover Template for Bootstrap</title>
+    <title>Personal Identity Provider</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -88,7 +88,7 @@ session_write_close();
             <div class="inner">
               <h3 class="masthead-brand">Personal Identity Provider</h3>
               <ul class="nav masthead-nav">
-                <li class="active"><a href="./">Login</a></li>
+                <li class="active"><a href="./">Home</a></li>
                 <li><a href="create">Create</a></li>
                 <li><a href="about">About</a></li>
               </ul>

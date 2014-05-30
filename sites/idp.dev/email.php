@@ -1,5 +1,6 @@
 <?php
-include 'utils.php';
+include('config.php');
+include('utils/idp.php');
 session_start();
 
 // get the identity data
@@ -102,7 +103,6 @@ be issued for any email address you list below.
 </p>
               <input type="text" name="email" class="form-control" placeholder="Your email address" required autofocus>
               <button class="btn btn-lg lead btn-primary btn-block" type="submit">Issue Email Credential</button>
-              <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
             </form>
 
             <pre style="text-align: left;"><?php echo json_encode($identity, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES); ?></pre>
