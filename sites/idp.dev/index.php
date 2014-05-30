@@ -90,7 +90,7 @@ session_write_close();
               <ul class="nav masthead-nav">
                 <li class="active"><a href="./">Login</a></li>
                 <li><a href="create">Create</a></li>
-                <li><a href="admin">Admin</a></li>
+                <li><a href="about">About</a></li>
               </ul>
             </div>
           </div>
@@ -105,18 +105,6 @@ session_write_close();
               <button class="btn btn-lg lead btn-primary btn-block" type="submit">Login</button>
             </form>
             <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
-          </div>
-
-    <div class="container">
-
-
-    </div> <!-- /container -->
-
-
-          <div class="mastfoot">
-            <div class="inner">
-              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-            </div>
           </div>
 
         </div>
