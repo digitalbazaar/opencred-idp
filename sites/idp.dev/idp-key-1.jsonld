@@ -1,5 +1,6 @@
 {
-  "@context": "https://w3id.org/identity/v1",
-  "id": "http://idp.dev/idp-key-1",
-  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\r\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuKEiro7T5KDpVDqJrxld\r\nFJj0qALMmBAYUlicP77n8w2rsx0P5QyRjuVEo+U0QU+Ak4xyhBrlD49rAnIXrXqN\r\nSf69yRX1vv7mMSiH0xgxGrfBP0l4lGMivN0P7ZGjL+oARisgbip/tD95s2sQvC2x\r\nQ4nUBbeasJgSXCjrP9amyZkq8MK19HiSYNZJcYMNxbJNu8zP9Y0NrL96p/qt6l8L\r\n//4fLbzKvONC+MgHF9AkJrXKfx2rTuxQySFvWiEMcfUwGVnvbMnqUxWHKh4T/Buo\r\nwNySYEF+37POow4r6jq8jyygG4akxeeNs4lwkONGGS8kT/0dUBR9VS+6rux8ksJx\r\niwIDAQAB\r\n-----END PUBLIC KEY-----\r\n",
+    "@context": "https://w3id.org/identity/v1",
+    "id": "http://idp.dev/idp-key-1",
+    "owner": "http://idp.dev/idp",
+    "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5eaKfxS7rNY3r0AfMQBk\nEHXamryrAq+slaiW00lNumRAQJ6boeaC+Pr17Lv4jD1hf7VTK6F8a/MCBBWrKoHT\nKLZzHnKO0Vcq1MRNnWG8xtBl1q2QfAFVv18ifdxWlP/6C6nDHv3ygDFXKTMRmBa5\nqWH5nMnvkdQE585LkiPHupfsQmELGzs94C183N86SPQjOBHjsqikKa1nf66Q3Ldp\nqtGoO/UL85VvaOL1gFWbxHiJoLA0JqOMNQ6wNhkuOqC16mG9XFx7qDC2ZuMr4wPw\n7L+9zs8eLZfloCUrTneYxGPDyGBv8LQra4OJXPfcSodZTphygQ+hhm2bLPAlEJqO\nJwIDAQAB\n-----END PUBLIC KEY-----\n"
 }
