@@ -78,17 +78,14 @@ if($identity && $_POST['email']) {
 
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">Personal Identity Provider</h3>
               <ul class="nav masthead-nav">
-                <li><a href="./">Login</a></li>
-                <li><a href="create">Create</a></li>
-                <li><a href="admin">Admin</a></li>
+                <li class="active"><a href=""><?php echo $_SESSION['name']; ?></a></li>
+                <li><a href="/" onclick="logout();">Logout</a></li>
               </ul>
             </div>
           </div>
 
           <div class="inner cover">
-
             <form class="form-signin" role="form" action="email" method="POST">
               <h2 class="form-signin-heading">Issue Email Credential</h2>
               <p>
