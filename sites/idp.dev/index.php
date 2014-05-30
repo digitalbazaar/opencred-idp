@@ -1,5 +1,7 @@
 <?php
-include 'utils.php';
+include('config.php');
+include('utils/idp.php');
+
 session_start();
 
 // redirect to the identity page if already logged in
@@ -13,7 +15,8 @@ if($_SESSION['name']) {
 // attempt a login if login information was POSTed
 if(!empty($_POST)) {
   if($_POST['name'] && $_POST['passphrase']) {
-    $filename = dirname(__FILE__) . '/db/'. $_POST['name'] . '.jsonld';
+    global $TOPDIR;
+    $filename = $TOPDIR . '/db/'. $_POST['name'] . '.jsonld';
     $identity_json = file_get_contents($filename);
 
     // ensure that the account doesn't already exist
