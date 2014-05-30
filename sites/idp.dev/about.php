@@ -54,10 +54,62 @@ session_start();
             </div>
           </div>
 
-          <div class="inner cover">
+          <div style="text-align: left;" class="inner cover">
+            <h2>What is this site?</h2>
+            <p>
+This site is a technology demonstration of an Identity Credentials Personal
+Identity Provider. It is based on a set of specifications that are being
+worked on as a part of the
+<a style="text-decoration: underline;" href="https://web-payments.org/">
+Web Payments Community Group</a> work at the World Wide Web Consortium.
+            </p>
+            <h2>What's so special about this technology?</h2>
+            <p>
+The Web does not have a standards-based, privacy-aware, single sign-on solution.
+It also does not have a way to prove who you are to websites in a way that's
+easy and secure. The experimental technology on this website, allows you to:
+<ul>
+  <li>
+Bypass the need to create usernames and passwords to login to websites,
+replacing the login process with a far more secure mechanism based on
+cryptography and digital signatures.
+  </li>
+  <li>
+Be in control of your identities online by ensuring that you own and control
+your identity data.
+  </li>
+  <li>
+Associate digitally signed credentials such as a shipping address,
+preferred payment service, driver's license, proof of age, and electronic
+passports with your identity and then transmit those credentials
+to websites that require the information on an as-needed basis.
+  </li>
+  <li>
+Be in control of who can and can't track your login behavior online.
+  </li>
+</ul>
+            <h2>Isn't this just Persona or OpenID Connect?</h2>
+            <p>
+Yes and no. Mozilla Persona has removed all paid engineers from the project,
+so the chances of it becoming a Web standard at this point are quite low.
+Persona also doesn't let you store and transmit arbitrary credential
+information. OpenID Connect is complex. It is also not privacy aware and
+allows the identity providers to track which sites you're visiting.
+Transmitting credential information in OpenID Connect is not clearly defined.
+That said, this project applauds both the Persona and OpenID work, and does
+plan to provide compatability layers for each login mechanism to ensure that
+the login mechanism demonstrated on this site will be compatible with
+both Persona and OpenID Connect.
+            </p>
 
-            <p>This is a personal identity provider.</p>
-
+            </p>
+            <h2>Where can I learn more about this technology?</h2>
+            <p>
+Read the proposal for
+<a style="text-decoration: underline;"
+href="http://manu.sporny.org/2014/credential-based-login/">
+Credential-based login for the Web</a>.
+            </p>
           </div>
 
         </div>
