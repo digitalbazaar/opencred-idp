@@ -6,6 +6,7 @@ To setup a test environment, you will need the following pieces of software:
 * apache2 (>= 2.4.7)
 * php5 (>= 5.5.8)
 * php5-json (>= 1.3.1)
+* php5-curl (>= 5.5.3)
 
 Installing the Personal Identity Provider
 -----------------------------------------
