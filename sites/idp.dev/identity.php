@@ -184,10 +184,15 @@ if(array_key_exists('action', $_GET) && $_GET['action'] === 'register') {
       <div class="site-wrapper-inner">
 
         <div class="cover-container">
-
-          <div class="inner cover">
-
-            <h2 class="form-signin-heading"><?php echo $_SESSION['name']; ?></h2>
+          <div class="masthead clearfix">
+            <div class="inner">
+              <ul class="nav masthead-nav">
+                <li class="active"><a href=""><?php echo $_SESSION['name']; ?></a></li>
+                <li><a href="/" onclick="logout();">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="inner cover" style="padding-top: 6em;">
 
             <?php if(!$registered) echo '<div class="alert alert-warning">WARNING: This identity isn\'t active yet! The next step is to register it with the global Web login network. <a class="alert-link" href="'. $registration_url .'">Click here to register</a>.</div>' ?>
             <?php if($registered && !$emailCredential) echo '<div class="alert alert-warning">WARNING: You don\'t have an email credential yet! <a class="alert-link" href="email">Click here to get one</a>.</div>' ?>

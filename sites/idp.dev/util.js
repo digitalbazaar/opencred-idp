@@ -33,6 +33,13 @@ function post(url, params) {
 }
 
 /**
+ * Perform a logout from the website.
+ */
+function logout() {
+  document.cookie = 'PHPSESSID=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+/**
  * Starts the login process by attempting to get id and email credentials.
  */
 function checkQuery() {
