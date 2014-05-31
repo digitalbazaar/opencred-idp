@@ -1,5 +1,5 @@
 <?php
-// This is an example configuration file for the Personal Identity Provider
+// This is an example configuration file for the Credential Issuer
 
 $GLOBALS['idp_site'] = 'http://idp.dev/';
 $GLOBALS['login_site'] = 'http://login.dev/';

@@ -1,5 +1,7 @@
 <?php
+include('config.php');
 include('utils/credential.php');
+
 session_start();
 
 $credentials = false;
