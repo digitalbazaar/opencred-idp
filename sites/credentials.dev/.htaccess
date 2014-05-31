@@ -5,4 +5,4 @@ AddHandler application/x-httpd-php .htm .html
 RewriteEngine On 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^credentials-key-1$ credentials-key-1.jsonld [NC]
-RewriteRule ^(credentials|issue)$ $1.php [NC,L]
+RewriteRule ^(credentials|issue|about)$ $1.php [NC,L]

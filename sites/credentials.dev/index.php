@@ -50,6 +50,7 @@ if(!empty($_SESSION)) {
         <ul class="nav masthead-nav">
           <?php if(!$email) echo '<li class="active"><a href="#" onclick="login();">Login</a></li>' ?>
           <?php if($email) echo '<li>' . $email; if($id) echo ' (' . $id . ')'; echo '</li>' ?>
+          <li><a href="about" onclick="login();">About</a></li>
         </ul>
       </div>
     </div>
@@ -75,7 +76,7 @@ demonstration purposes.
               </a>
             </h4>
           </div>
-          <div id="collapseOne" class="panel-collapse collapse in">
+          <div id="collapseOne" class="panel-collapse collapse">
             <div class="panel-body">
               <p>
 A billing address credential is typically assigned to you by an organization
