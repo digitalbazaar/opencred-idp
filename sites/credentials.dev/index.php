@@ -50,7 +50,7 @@ if(!empty($_SESSION)) {
       <div class="inner">
         <h3 class="masthead-brand">Credential Issuer</h3>
         <ul class="nav masthead-nav">
-          <?php if(!$email) echo '<li class="active"><a href="#" onclick="login();">Login</a></li>' ?>
+          <li class="active"><a href="./">Home</a></li>
           <?php if($email) echo '<li>' . $email; if($id) echo ' (' . $id . ')'; echo '</li>' ?>
           <li><a href="about" onclick="login();">About</a></li>
         </ul>
@@ -61,15 +61,25 @@ if(!empty($_SESSION)) {
       <p>
 This website is used to issue credentials to you. A credential is
 information that is associated with you like a home address, birthday,
-driver's license, or government ID. Typically, this information would be issued
-to you by a trusted 3rd party organization. The digital signature on
-the credential that is issued to you could be checked by a receiving party to
-ensure that the information was assigned to you by a trustworthy organization.
-This website is for demonstration purposes, and so the digital signature on
-the credential that will be assigned to you is meaningless except for
-demonstration purposes.
+driver's license, or government ID. Credentials on the Web are important
+because they enable you to prove who you are online.
       </p>
-      <div class="panel-group" id="accordion">
+
+Credentials are typically issued to you by a trusted 3rd party organization.
+The digital signature on the credential that is issued to you can be checked
+by a receiving party to ensure that the information was assigned to you by
+a trustworthy organization. This website is for demonstration purposes only,
+and so the digital signature on the credentials that will be issued to you are
+meaningless except for demonstration purposes.
+      </p>
+
+      <p>
+To use this website, you must first login via your identity provider.<br>
+<button class="btn btn-lg btn-primary" onclick="login();">Login</button>
+      </p>
+
+
+      <div class="panel-group" id="accordion" style="<?php if(!$email) echo 'display: none;' ?>">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
