@@ -58,10 +58,16 @@ session_start();
             <h2>What is this site?</h2>
             <p>
 This site is a technology demonstration of an Identity Credentials Personal
-Identity Provider. It is based on a set of specifications that are being
-worked on as a part of the
+Identity Provider. It allows you to create and store one or more identity
+documents on the site, associate credentials with each identity, and
+transmit one or more of those credentials to websites that request the
+credentials. The technology is based on a set of specifications that are being
+developed as a part of the
 <a style="text-decoration: underline;" href="https://web-payments.org/">
 Web Payments Community Group</a> work at the World Wide Web Consortium.
+The source code is
+<a style="text-decoration: underline;"
+  href="https://github.com/digitalbazaar/opencred-idp">available on Github</a>.
             </p>
             <h2>What's so special about this technology?</h2>
             <p>
