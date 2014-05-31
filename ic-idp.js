@@ -43,6 +43,8 @@ th.init({id: hashnameFile}, function(err, hashname) {
     return console.log("IdP startup failed", err);
   }
 
+  console.log('idp debug: hashname is', hashname.hashname);
+
   async.auto({
     loadDatabase: function(callback) {
       // save the mapping database to disk

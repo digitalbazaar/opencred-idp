@@ -3,7 +3,7 @@ var telehash = require('telehash');
 // seed identity provider hashname
 // FIXME: Implement decentralized IdP discovery mechanism
 var idpHashname =
-  '0cecc709d28affde008a56a3d10bac2681ff62183518393ee842cb9e158907d3';
+  '14f42e7c4d3c657cc6acbc7808d93405ba6afd0c00327678e8ef151642e4b753';
 
 // identity credentials query channel
 var icQueryChannel = 'icQuery';
