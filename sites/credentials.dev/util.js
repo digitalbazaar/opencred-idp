@@ -28,6 +28,13 @@ function login() {
 }
 
 /**
+ * Perform a logout from the website.
+ */
+function logout() {
+  document.cookie = 'PHPSESSID=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+/**
  * Shows a popup and submits the given form in it.
  *
  * @param form the form to submit.

@@ -51,7 +51,8 @@ if(!empty($_SESSION)) {
         <h3 class="masthead-brand">Credential Issuer</h3>
         <ul class="nav masthead-nav">
           <li class="active"><a href="./">Home</a></li>
-          <li><a href="about" onclick="login();">About</a></li>
+          <li><a href="about">About</a></li>
+          <li style="<?php if(!$id) echo 'display:none';?>"><a href="./" onclick="logout();">Logout</a></li>
         </ul>
       </div>
     </div>
@@ -315,6 +316,6 @@ government before issuing the credential to you.
     <!-- Latest compiled and minified JavaScript -->
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="navigator.identity.js"></script>
-    <script src="login.js"></script>
+    <script src="util.js"></script>
   </body>
 </html>

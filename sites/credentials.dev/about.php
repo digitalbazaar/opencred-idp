@@ -3,6 +3,11 @@ include('config.php');
 include('utils/credential.php');
 
 session_start();
+
+$id = false;
+if(!empty($_SESSION)) {
+  $id = $_SESSION['id'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +54,7 @@ session_start();
               <ul class="nav masthead-nav">
                 <li><a href="./">Home</a></li>
                 <li class="active"><a href="about">About</a></li>
+                <li style="<?php if(!$id) echo 'display:none';?>"><a href="./" onclick="logout();">Logout</a></li>
               </ul>
             </div>
           </div>
@@ -127,5 +133,6 @@ Credential-based login for the Web</a>.
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="util.js"></script>
   </body>
 </html>
