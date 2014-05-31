@@ -3,7 +3,7 @@ var telehash = require('telehash');
 // seed identity provider hashname
 // FIXME: Implement decentralized IdP discovery mechanism
 var idpHashname =
-  '14f42e7c4d3c657cc6acbc7808d93405ba6afd0c00327678e8ef151642e4b753';
+  'b2df855d484f78054c3df4fa5bfa8e19e39df195c23b7786c2804b6c1f9fe2c8';
 
 // identity credentials query channel
 var icQueryChannel = 'icQuery';
@@ -145,7 +145,6 @@ function login() {
   var passphrase = $('#passphrase').val();
 
   // calculate the IdP mapping hash
-  console.log(email, passphrase);
   var md = forge.md.sha256.create().update(email + passphrase);
   var identityHash = 'urn:sha256:' + md.digest().toHex();
 
@@ -158,7 +157,7 @@ function login() {
   };
   // query the IdP network for a particular identity
   hashname.start(idpHashname, icQueryChannel, query, packetHandler);
-  console.log('tc debug: sending query for', identityHash);
+  console.log('tc debug: sending query', query, 'to', idpHashname);
 }
 
 // prevent the form submit button from doing a form post

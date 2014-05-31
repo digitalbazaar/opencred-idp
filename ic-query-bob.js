@@ -4,7 +4,8 @@ var path = require('path');
 var th = require('telehash');
 
 // Hashnames
-var idpHashname = '0cecc709d28affde008a56a3d10bac2681ff62183518393ee842cb9e158907d3';
+var idpHashname =
+  'b2df855d484f78054c3df4fa5bfa8e19e39df195c23b7786c2804b6c1f9fe2c8';
 
 // the demo email, password, and private key
 var identityEmail = 'bob@example.com';
@@ -18,7 +19,7 @@ var identityHash = md.digest().toHex()
 var identityInfo = {};
 
 // open credential query channel
-var ocQueryChannel = 'ocQuery';
+var ocQueryChannel = 'icQuery';
 
 /******************** Packet Handlers *********************/
 
