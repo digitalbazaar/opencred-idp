@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Mixnet Registration</title>
+    <title>Web Login Registration</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -33,10 +33,22 @@
     <div class="container">
 
       <form id="registerForm" class="form-signin" role="form">
-        <h2 class="form-signin-heading">Mixnet Registration</h2>
-        <input id="email" name="email" type="email" class="form-control" placeholder="Email address" required autofocus value="msporny@digitalbazaar.com">
-        <input id="passphrase" name="passphrase" type="password" class="form-control" placeholder="Passphrase" required value="zasswordyasswordxasswordwassword">
-        <input id="passphrase_verify" name="passphrase_verify" type="password" class="form-control" placeholder="Passphrase" required value="zasswordyasswordxasswordwassword">
+        <h2 class="form-signin-heading">Login Hub Registration</h2>
+        <p>
+You are registering with the global Web login system. This system associates
+your Web identity with this device, an email address, and passphrase. It also
+protects your privacy by ensuring that your identity provider can't track the
+websites that you are logging in to.
+        </p>
+        <input id="email" name="email" type="email" class="form-control" placeholder="Email address (example: bob@gmail.com)" required autofocus>
+        <input id="passphrase" name="passphrase" type="password" class="form-control" placeholder="Passphrase (example: GreenHeartsBrave55Stars)" required>
+        <input id="passphrase_verify" name="passphrase_verify" type="password" class="form-control" placeholder="Verify passphrase" required>
+        <p>
+For security purposes, your password should be different than the one you use
+to log into your Identity Provider. Preferably, you would use a system like
+<a href="https://lastpass.com/">LastPass</a> to generate a random 30
+character passphrase for this website.
+        </p>
         <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="registerId();">Register</button>
       </form>
 

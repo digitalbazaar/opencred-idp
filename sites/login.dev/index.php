@@ -30,7 +30,7 @@ if(!empty($_POST)) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Mixnet Login</title>
+    <title>Login Hub</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -56,10 +56,18 @@ if(!empty($_POST)) {
     <div class="container">
 
       <form class="form-signin" role="form" onsubmit="login();">
-        <h2 class="form-signin-heading">Mixnet Login</h2>
-        <input id="email" type="email" class="form-control" placeholder="Email address" required autofocus value="msporny@digitalbazaar.com">
-        <input id="passphrase" type="password" class="form-control" placeholder="Passphrase" required value="zasswordyasswordxasswordwassword">
+        <h2 class="form-signin-heading">Login Hub</h2>
+        <p>
+You are logging into this website using the global Web login system. This system
+is used to discover your identity provider using an email and passphrase
+that you have previously registered with this system. The system also
+protects your privacy by ensuring that your identity provider can't track the
+websites that you are logging in to.
+        </p>
+        <input id="email" type="email" class="form-control" placeholder="Email address (example: bob@gmail.com)" required autofocus>
+        <input id="passphrase" type="password" class="form-control" placeholder="Passphrase (example: GreenHeartsBrave55Stars)" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        <p style="padding-top: 10px; text-align: center;"><a href="about">Find out more about this website</a></p>
       </form>
 
     </div> <!-- /container -->
