@@ -51,7 +51,6 @@ if(!empty($_SESSION)) {
         <h3 class="masthead-brand">Credential Issuer</h3>
         <ul class="nav masthead-nav">
           <li class="active"><a href="./">Home</a></li>
-          <?php if($email) echo '<li>' . $email; if($id) echo ' (' . $id . ')'; echo '</li>' ?>
           <li><a href="about" onclick="login();">About</a></li>
         </ul>
       </div>
@@ -73,7 +72,14 @@ and so the digital signature on the credentials that will be issued to you are
 meaningless except for demonstration purposes.
       </p>
 
-      <p>
+      <p style="<?php if(!$email) echo 'display: none;' ?>">
+Your identity is:
+<span style="text-decoration: underline"><?php if($id) echo $id; ?></span> <br>
+Your email is:
+<span style="text-decoration: underline"><?php if($email) echo $email; ?></span>
+      </p>
+
+      <p style="<?php if($email) echo 'display: none;' ?>">
 To use this website, you must first login via your identity provider.<br>
 <button class="btn btn-lg btn-primary" onclick="login();">Login</button>
       </p>

@@ -64,16 +64,15 @@ session_write_close();
           <div class="masthead clearfix">
             <div class="inner">
 
-            <h2 class="form-signin-heading">Retrieved Credentials</h2>
+            <h2 class="form-signin-heading">Login Successful</h2>
+            <p>
+Your login was successful, you may now go and
+<a style="text-decoration: underline" href="./">
+issue credentials to yourself</a>.
+            </p>
+            <p>
+These are the login credentials we received from your identity provider:</p>
             <pre style="text-align: left;"><?php echo $credentials_json; ?></pre>
-
-            <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
-          </div>
-
-          <div class="mastfoot">
-            <div class="inner">
-              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-            </div>
           </div>
 
         </div>

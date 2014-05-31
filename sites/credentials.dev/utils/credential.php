@@ -116,6 +116,7 @@ function full_url($s, $use_forwarded_host=false)
  * @return a signed JSON-LD document
  */
 function credential_sign($jsonld) {
+  global $TOPDIR;
   $privateKey = json_decode(file_get_contents(
     $TOPDIR . '/issuer-key-1.private.jsonld'), true);
   $options = array();

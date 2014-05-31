@@ -4,5 +4,22 @@ AddHandler application/x-httpd-php .htm .html
 
 RewriteEngine On 
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^credentials-key-1$ credentials-key-1.jsonld [NC]
+RewriteRule ^issuer-key-1$ issuer-key-1.jsonld [NC]
+RewriteRule ^issuer$ issuer.jsonld [NC]
 RewriteRule ^(credentials|issue|about)$ $1.php [NC,L]
+
+<Files ".htaccess">
+  Order Allow,Deny
+  Deny from all
+</Files>
+
+<Files "config.php">
+  Order Allow,Deny
+  Deny from all
+</Files>
+
+<Files "issuer-key-1.private.jsonld">
+  Order Allow,Deny
+  Deny from all
+</Files>
+
