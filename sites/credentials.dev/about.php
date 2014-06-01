@@ -60,6 +60,99 @@ if(!empty($_SESSION)) {
           </div>
 
           <div style="text-align: left;" class="inner cover">
+            <h2>What is this demo about?</h2>
+            <p>
+This demonstration is a proof-of-concept asserting that we can have a unified,
+secure identity and login solution for the Web. The technology is capable of
+storing and transmitting your identity credentials (email address,
+payment processor, shipping address, driver's license, passport, etc.) while
+also protecting your privacy from those that would want to track and sell your
+online browsing behavior. It is in the same realm of technology as
+Mozilla Persona and OpenID Connect.
+            </p>
+            <p>
+This website is based on the
+<a href="http://manu.sporny.org/2014/credential-based-login/">
+Identity Credentials</a> technology being developed by the
+<a href="https://web-payments.org/">Web Payments Community Group</a> at the
+<a href="http://www.w3.org/Consortium/">World Wide Web Consortium</a>. It
+consists of an ecosystem of four websites:
+            </p>
+            <dl>
+            <dt>Identity Provider (identus.org)</dt>
+            <dd>
+The Identity Provider stores your identity document and any information about
+you including any credentials that other sites may issue to you. You will
+do several things on this site during the demo:
+              <ul>
+                <li>
+Create an identity.
+                </li>
+                <li>
+Register your identity with the Login Hub.
+                </li>
+                <li>
+Generate a verified email credential and store it in your identity.
+                </li>
+              </ul>
+            </dd>
+            <dt>Login Hub (login-hub.com)</dt>
+            <dd>
+This site helps other websites discover your identity provider in a way that
+protects your privacy from both the website you're logging into as well as your
+identity provider. Eventually the functionality of this website will be
+implemented directly in browsers, but until that happens, it is used to
+bootstrap the discovery of and login/credential transmission process for
+the identity provider. You should use a separate passphrase for this site,
+preferably generated via a password manager like LastPass, and you will use
+that passphrase to log into sites other than your identityprovider site. You
+will do the following things with this site during the demo:
+              <ul>
+                <li>
+Register your identity, creating an association between your identity
+provider and the email address and passphrase you use on the login hub.
+                </li>
+                <li>
+Login to a website.
+                </li>
+              </ul>
+            </dd>
+            <dt>Credential Issuer (credential.club)</dt>
+            <dd>
+This site is responsible for verifying information about you like your
+home address, driver's license, and passport information. Once the site has
+verified some information about you, it can issue a credential to you. For
+the purposes of the demonstration, all verifications are simulated and you
+will immediately be given a credential when you ask for one. All credentials
+are digitally signed by the issuer which means their validity can be proven
+without the need to contact the issuer (or be online). You will use this site
+to:
+              <ul>
+                <li>
+Login using an email credential.
+                </li>
+                <li>
+Issue other credentials to yourself like a business address, proof of age,
+driver's license, and digital passport.
+                </li>
+              </ul>
+            </dd>
+            <dt>Single Sign-On Demo (NOT IMPLEMENTED)</dt>
+            <dd>
+The single sign-on website is be used to demonstrate the simplicity
+of credential-based login. The sign-on process requires you to click a login
+button, enter your email and passphrase on the Login Hub, and then verify
+that you would like to transmit the requested credential to the single
+sign-on website. You will use this site to:
+              <ul>
+                <li>
+Present various credentials to log in.
+                </li>
+              </ul>
+            </dd>
+            </dl>
+
+            </p>
             <h2>What is this site?</h2>
             <p>
 This site is a technology demonstration of a Credential Issuer.
@@ -97,12 +190,16 @@ to websites that require the information on an as-needed basis.
 Be in control of who can and can't track your login behavior online.
   </li>
 </ul>
-            <h2>Isn't this just Persona or OpenID Connect?</h2>
+            <h2>Isn't this just Persona, or WebID+TLS, or OpenID Connect?</h2>
             <p>
-Yes and no. Mozilla Persona has removed all paid engineers from the project,
+No. Mozilla Persona has removed all paid engineers from the project,
 so the chances of it becoming a Web standard at this point are quite low.
 Persona also doesn't let you store and transmit arbitrary credential
-information. OpenID Connect is complex. It is also not privacy aware and
+information. WebID+TLS sends information across the TLS channel, which is
+not accessible by many pieces of software that operate at the website
+level. WebID+TLS also depends on the use of client-side certificates that are
+managed by the browser, which are difficult to use for most
+non-technologists. OpenID Connect is complex. It is also not privacy aware and
 allows the identity providers to track which sites you're visiting.
 Transmitting credential information in OpenID Connect is not clearly defined.
 That said, this project applauds both the Persona and OpenID work, and does
