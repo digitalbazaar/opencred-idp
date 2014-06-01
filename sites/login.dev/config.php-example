@@ -1,0 +1,9 @@
+<?php
+// This is an example configuration file for the Personal Identity Provider
+
+$GLOBALS['idp_site'] = 'http://idp.dev/';
+$GLOBALS['login_site'] = 'http://login.dev/';
+$GLOBALS['issuer_site'] = 'http://credentials.dev/';
+$GLOBALS['access_site'] = 'http://access.dev/';
+
+?>
