@@ -110,7 +110,8 @@ function packetHandler(err, packet, chan, callback) {
     var idpQueryUrl = decrypted.identityDocument +
       '?action=query&credentials=' + request.credentials + '&domain=' +
       request.domain + '&callback=' +
-      encodeURIComponent('http://login.dev/?response=' + request.id);
+      encodeURIComponent(
+        window.icOptions.loginSite + '?response=' + request.id);
 
     // re-direct the request to the target IdP
     console.log('TARGET URL:', idpQueryUrl);

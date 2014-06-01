@@ -1,6 +1,16 @@
 <?php
+include('config.php');
+
 $query = false;
 $response = false;
+
+// check to make sure the site is properly setup
+if(!file_exists($TOPDIR . '/config.php')) {
+  echo 'Error: You have not setup a config.php file for this website, please ' .
+    'see the \'config.php-example\' file distributed with this software ' .
+    ' for an example.';
+  die();
+}
 
 if(!empty($_POST)) {
   if($_GET['action'] === 'query') {
@@ -87,6 +97,11 @@ websites that you are logging in to.
     <script src="login.js"></script>
     <?php if($query) echo '<script>window.icRequest = ' . $query . '</script>'; ?>
     <?php if($response) echo '<script>window.icResponse = ' . $response . ';</script>'; ?>
+    <script>
+      window.icOptions = {
+        loginSite: '<?php echo $GLOBALS['login_site']; ?>'
+      };
+    </script>
 
   </body>
 </html>
