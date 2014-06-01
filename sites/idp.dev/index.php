@@ -104,6 +104,7 @@ session_write_close();
               <input type="password" name="passphrase" class="form-control" placeholder="Passphrase" required>
               <button class="btn btn-lg lead btn-primary btn-block" type="submit">Login</button>
             </form>
+            <p>Don't have an account yet? <a style="text-decoration: underline;" href="create">Get one here</a>.</p>
             <?php if($error) echo '<div class="alert alert-danger">'.$error_message.'</div>' ?>
           </div>
 

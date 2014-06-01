@@ -309,6 +309,14 @@ government before issuing the credential to you.
 
   </div></div></div>
 
+    <script>
+    window.icOptions = {
+      issuerDomain: '<?php echo explode('/', $GLOBALS['issuer_site'])[2]; ?>',
+      issuerSite: '<?php echo $GLOBALS['issuer_site']; ?>',
+      loginSite: '<?php echo $GLOBALS['login_site']; ?>'
+    };
+    </script>
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

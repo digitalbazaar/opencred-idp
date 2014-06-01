@@ -60,7 +60,17 @@ function post(url, params) {
 function packetHandler(err, packet, chan, callback) {
   // check for error
   if(err) {
-    return console.log('tc: packet error', err);
+    if(err === 'timeout') {
+      var elem = document.getElementById('errorFeedback');
+      elem.innerHTML = 'Failed to route the login packet to the Telehash ' +
+        'network. Some browser WebSockets implementations are buggy and ' +
+        'the only way to fix this error is to close this browser tab and ' +
+        'retry the login from the site you just came from: ' +
+        '<a href="http://' + getParameterByName('domain') + '">' +
+        getParameterByName('domain') +'</a>.';
+      elem.removeAttribute('style');
+    }
+    return console.log('tc packet error:', err);
   }
   var message = packet.js;
 

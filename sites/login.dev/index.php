@@ -67,7 +67,9 @@ websites that you are logging in to.
         <input id="email" type="email" class="form-control" placeholder="Email address (example: bob@gmail.com)" required autofocus>
         <input id="passphrase" type="password" class="form-control" placeholder="Passphrase (example: GreenHeartsBrave55Stars)" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        <p id="errorFeedback" style="display: none;" class="alert alert-danger"></p>
         <p style="padding-top: 10px; text-align: center;"><a href="about">Find out more about this website</a></p>
+        <p style="display: none;" class="alert alert-error"></p>
       </form>
 
     </div> <!-- /container -->

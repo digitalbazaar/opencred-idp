@@ -18,9 +18,9 @@ function login() {
         id: '',
         email: ''
       },
-      domain: 'credentials.dev',
-      callback: 'http://credentials.dev/credentials',
-      idp: 'http://login.dev'
+      domain: window.icOptions.issuerDomain,
+      callback: window.icOptions.issuerSite + '/credentials',
+      idp: window.icOptions.loginSite
     });
   } catch(e) {
     console.log(e.stack);
