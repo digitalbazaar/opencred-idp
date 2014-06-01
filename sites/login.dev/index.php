@@ -5,7 +5,7 @@ $query = false;
 $response = false;
 
 // check to make sure the site is properly setup
-if(!file_exists($TOPDIR . '/config.php')) {
+if(!file_exists('config.php')) {
   echo 'Error: You have not setup a config.php file for this website, please ' .
     'see the \'config.php-example\' file distributed with this software ' .
     ' for an example.';
