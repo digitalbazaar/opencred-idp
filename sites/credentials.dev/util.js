@@ -19,7 +19,7 @@ function login() {
         email: ''
       },
       domain: window.icOptions.issuerDomain,
-      callback: window.icOptions.issuerSite + '/credentials',
+      callback: window.icOptions.issuerSite + 'credentials',
       idp: window.icOptions.loginSite
     });
   } catch(e) {
