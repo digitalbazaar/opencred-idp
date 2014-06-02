@@ -24,6 +24,9 @@ if(!empty($_SESSION) && !empty($_POST) && $_GET['type']) {
     $address['postalCode'] = $_POST['postalCode'];
     $address['addressCountry'] = $_POST['addressCountry'];
     $claim['address'] = $address;
+  } else if($_GET['type'] === 'PaymentProcessorCredential') {
+    // build the payment processor credential
+    $claim['paymentProcessor'] = $_POST['paymentProcessor'];
   } else if($_GET['type'] === 'ProofOfAgeCredential') {
     // build the proof of age credential
     $claim['proofOfAge'] = $_POST['proofOfAge'];

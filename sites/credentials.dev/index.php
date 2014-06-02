@@ -134,14 +134,41 @@ you.
           <div class="panel-heading">
             <h4 class="panel-title">
               <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                Age Verification
+                Payment Processor
               </a>
             </h4>
           </div>
           <div id="collapseTwo" class="panel-collapse collapse">
             <div class="panel-body">
               <p>
-An age verification is a privacy-aware credential that let's a receiver know
+A payment processor credential lets the receiver of the credential know that
+you are capable of sending and receiving payments via the payment processor.
+It can be used to automatically find a match between payment providers that a
+merchant can accept payment through and payment providers that a customer
+is capable of sending a payment through.
+              </p>
+              <form class="form-horizontal" role="form" action="issue?type=PaymentProcessorCredential" method="POST">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label" for="paymentProcessor">Processor</label>
+                  <div class="col-sm-8"><input name="paymentProcessor" type="text" class="form-control" placeholder="URL of the payment processor" required value="https://payhelper.com/"></div>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Issue Payment Processor Credential</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwoPointFive">
+                Age Verification
+              </a>
+            </h4>
+          </div>
+          <div id="collapseTwoPointFive" class="panel-collapse collapse">
+            <div class="panel-body">
+              <p>
+An age verification is a privacy-aware credential that lets a receiver know
 that you are at least a certain age without divulging your birth date. This
 type of credential is typically assigned to you by a governmental organization
 like the Social Security Administration. Since this is a demonstration service,
