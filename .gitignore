@@ -1,0 +1,8 @@
+*.sw[op]
+*~
+.cproject
+.project
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+.settings
