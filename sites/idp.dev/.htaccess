@@ -9,6 +9,10 @@ RewriteRule ^idp$ idp.jsonld [NC]
 RewriteRule ^(create|email|about)$ $1.php [NC]
 RewriteRule ^([^\.]+)$ identity.php [NC]
 
+RewriteRule ^idp-key-1.jsonld$ - [NC,E=cors]
+RewriteRule ^idp.jsonld$ - [NC,E=cors]
+Header set Access-Control-Allow-Origin "*" env=cors
+
 <Files ".htaccess">
   Order Allow,Deny
   Deny from all
